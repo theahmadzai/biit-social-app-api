@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  node:
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/home/node/app
+      - /home/node/app/node_modules
+    depends_on:
+      - db
+    networks:
+      - appnet
+    environment:
+      MONGO_CONNECTION_STRING: mongodb://database:27017
+  db:
+    image: mongo:4.0.20
+    networks:
+      appnet:
+        aliases:
+          - database
+
+networks:
+  appnet:
