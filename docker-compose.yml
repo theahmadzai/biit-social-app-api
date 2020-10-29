@@ -1,25 +1,36 @@
-version: '3'
-
+version: '3.8'
+networks:
+  appnet:
+volumes:
+  node_modules:
 services:
   node:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_VERSION=${NODE_IMAGE_VERSION}
+    command: nodemon -L src/index.js
     ports:
       - '3000:3000'
     volumes:
-      - .:/home/node/app
-      - /home/node/app/node_modules
+      - type: bind
+        source: ./
+        target: /home/node/app
+      - type: volume
+        source: node_modules
+        target: /home/node/app/node_modules
     depends_on:
       - db
     networks:
       - appnet
     environment:
       MONGO_CONNECTION_STRING: mongodb://database:27017
+    env_file:
+      - .env
   db:
-    image: mongo:4.0.20
+    image: mongo:${MONGO_IMAGE_VERSION}
     networks:
       appnet:
         aliases:
           - database
-
-networks:
-  appnet:

@@ -1,13 +1,13 @@
-FROM node:lts-alpine
+ARG NODE_VERSION
+
+FROM node:${NODE_VERSION}
 
 WORKDIR /home/node/app
 
 RUN npm i -g nodemon
 
-COPY package.json package-lock.json ./
+COPY package.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY . .
-
-CMD ["nodemon", "src/index.js"]
