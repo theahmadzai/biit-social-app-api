@@ -1,6 +1,7 @@
 {
-  "name": "app",
-  "version": "1.0.0",
+  "private": true,
+  "name": "biit-social-app",
+  "version": "0.1.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
