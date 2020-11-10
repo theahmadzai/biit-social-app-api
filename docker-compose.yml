@@ -10,7 +10,6 @@ services:
       dockerfile: Dockerfile
       args:
         - NODE_VERSION=${NODE_IMAGE_VERSION}
-    command: nodemon -L src/index.js
     ports:
       - '3000:3000'
     volumes:
