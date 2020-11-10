@@ -5,4 +5,3 @@ RUN npm i -g nodemon
 COPY package.json ./
 RUN npm install
 COPY . .
-ENTRYPOINT [ "nodemon", "-L", "src/index.js"]

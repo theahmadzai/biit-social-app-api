@@ -1,16 +1,30 @@
 {
-  "private": true,
-  "name": "biit-social-app",
   "version": "0.1.0",
-  "description": "",
+  "name": "biit-social-app-api",
+  "description": "API for Social networking BIIT react native mobile application",
+  "author": {
+    "name": "Javed Ahmadzai",
+    "email": "theahmadzai@hotmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theahmadzai/biit-social-app-api.git"
+  },
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint '*/**/*.{js,jsx,ts,tsx}' --quiet --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,json}\""
   },
-  "author": "Javed Ahmadzai",
-  "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^5.10.11"
-  }
+  },
+  "devDependencies": {
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "prettier": "^2.1.2"
+  },
+  "private": true
 }

@@ -1,1 +1,1 @@
-# biit-social-app
+# biit-social-app-api

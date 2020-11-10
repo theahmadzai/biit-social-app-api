@@ -3,10 +3,10 @@ const mongoose = require('mongoose')
 
 const app = express()
 
-serverPort = process.env.PORT || 3000
-mongoConnectionUrl =
+const serverPort = process.env.PORT || 3000
+const mongoConnectionUrl =
   process.env.MONGO_CONNECTION_STRING || 'mongodb://127.0.0.1:27017'
-mongoDatabase = 'test'
+const mongoDatabase = 'test'
 
 mongoose.connect(`${mongoConnectionUrl}/${mongoDatabase}`, {
   useNewUrlParser: true,
