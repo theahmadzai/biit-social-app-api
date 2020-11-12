@@ -1,7 +1,7 @@
 ARG NODE_VERSION
 FROM node:${NODE_VERSION}
-WORKDIR /home/node/app
+WORKDIR /home/app
 RUN npm i -g nodemon
 COPY package.json ./
-RUN npm ci
+RUN npm install
 COPY . .

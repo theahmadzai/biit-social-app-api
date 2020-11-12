@@ -1,8 +1,12 @@
 version: '3.8'
+
 networks:
   appnet:
+
 volumes:
   node_modules:
+  database:
+
 services:
   node:
     build:
@@ -11,26 +15,40 @@ services:
       args:
         - NODE_VERSION=${NODE_IMAGE_VERSION}
     command: nodemon -L src/index.js
+    networks:
+      - appnet
     ports:
       - '3000:3000'
     volumes:
       - type: bind
-        source: ./
-        target: /home/node/app
+        source: ./src
+        target: /home/app
       - type: volume
         source: node_modules
-        target: /home/node/app/node_modules
+        target: /home/app/node_modules
     depends_on:
       - db
-    networks:
-      - appnet
     environment:
-      MONGO_CONNECTION_STRING: mongodb://database:27017
+      DB_HOSTNAME: 'database'
+      DB_USER: 'sa'
+      DB_PASSWORD: '${MSSQL_PASSWORD}'
+      DB_NAME: '${MSSQL_DATABASE}'
     env_file:
       - .env
+
   db:
-    image: mongo:${MONGO_IMAGE_VERSION}
+    image: mcr.microsoft.com/mssql/server:${MSSQL_IMAGE_VERSION}
+    user: root
     networks:
       appnet:
         aliases:
           - database
+    ports:
+      - '1433:1433'
+    volumes:
+      - type: volume
+        source: database
+        target: /var/opt/mssql/data
+    environment:
+      SA_PASSWORD: '${MSSQL_PASSWORD}'
+      ACCEPT_EULA: 'Y'
