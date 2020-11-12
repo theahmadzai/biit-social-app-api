@@ -14,14 +14,14 @@ services:
       dockerfile: Dockerfile
       args:
         - NODE_VERSION=${NODE_IMAGE_VERSION}
-    command: nodemon -L src/index.js
+    command: npm run containerized
     networks:
       - appnet
     ports:
       - '3000:3000'
     volumes:
       - type: bind
-        source: ./src
+        source: ./
         target: /home/app
       - type: volume
         source: node_modules
@@ -30,9 +30,6 @@ services:
       - db
     environment:
       DB_HOSTNAME: 'database'
-      DB_USER: 'sa'
-      DB_PASSWORD: '${MSSQL_PASSWORD}'
-      DB_NAME: '${MSSQL_DATABASE}'
     env_file:
       - .env
 
@@ -50,5 +47,5 @@ services:
         source: database
         target: /var/opt/mssql/data
     environment:
-      SA_PASSWORD: '${MSSQL_PASSWORD}'
+      SA_PASSWORD: '${DB_PASSWORD}'
       ACCEPT_EULA: 'Y'
