@@ -6,7 +6,7 @@ module.exports = sequelize =>
     {
       regNo: {
         type: DataTypes.STRING,
-        field: 'Reg_No',
+        field: 'Reg_no',
         primaryKey: true,
       },
       appNo: {
