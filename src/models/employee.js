@@ -6,7 +6,7 @@ module.exports = sequelize =>
     {
       empNo: {
         type: DataTypes.STRING,
-        field: 'Emp_No',
+        field: 'Emp_no',
         primaryKey: true,
       },
       firstName: {
