@@ -6,108 +6,108 @@ module.exports = sequelize =>
     {
       regNo: {
         type: DataTypes.STRING,
-        field: 'Reg_No',
+        field: 'reg_No',
         primaryKey: true,
       },
       appNo: {
         type: DataTypes.STRING,
-        field: 'App_no',
+        field: 'app_no',
       },
       firstName: {
         type: DataTypes.STRING,
-        field: 'St_firstname',
+        field: 'st_firstname',
       },
       lastName: {
         type: DataTypes.STRING,
-        field: 'St_lastname',
+        field: 'st_lastname',
       },
       middleName: {
         type: DataTypes.STRING,
-        field: 'St_middlename',
+        field: 'st_middlename',
       },
       fatherName: {
         type: DataTypes.STRING,
-        field: 'Father_name',
+        field: 'father_name',
       },
       email: {
         type: DataTypes.STRING,
-        field: 'St_email',
+        field: 'st_email',
       },
       sex: {
         type: DataTypes.STRING,
-        field: 'Sex',
+        field: 'sex',
       },
       uaarRegNo: {
         type: DataTypes.STRING,
-        field: 'Uaar_reg_no',
+        field: 'uaar_reg_no',
       },
       maritalStatus: {
         type: DataTypes.STRING,
-        field: 'Marital_status',
+        field: 'marital_status',
       },
       birthDate: {
         type: DataTypes.DATE,
-        field: 'Birth_date',
+        field: 'birth_date',
       },
       nic: {
         type: DataTypes.STRING,
-        field: 'Nic_no',
+        field: 'nic_no',
       },
       currentAddress: {
         type: DataTypes.STRING,
-        field: 'Pr_address',
+        field: 'pr_address',
       },
       currentCity: {
         type: DataTypes.STRING,
-        field: 'Pr_city',
+        field: 'pr_city',
       },
       permanentAddress: {
         type: DataTypes.STRING,
-        field: 'Per_address',
+        field: 'per_address',
       },
       permanentCity: {
         type: DataTypes.STRING,
-        field: 'Per_city',
+        field: 'per_city',
       },
       phone: {
         type: DataTypes.STRING,
-        field: 'Per_telno',
+        field: 'per_telno',
       },
       admissionStatus: {
         type: DataTypes.STRING,
-        field: 'Ad_status',
+        field: 'ad_status',
       },
       session: {
         type: DataTypes.STRING,
-        field: 'Sess',
+        field: 'sess',
       },
       prefOne: {
         type: DataTypes.STRING,
-        field: 'Pref_1',
+        field: 'pref_1',
       },
       prefTwo: {
         type: DataTypes.STRING,
-        field: 'Pref_2',
+        field: 'pref_2',
       },
       admissionDate: {
         type: DataTypes.DATE,
-        field: 'Adm_date',
+        field: 'adm_date',
       },
       semester: {
         type: DataTypes.STRING,
-        field: 'Semester_no',
+        field: 'semester_no',
       },
       remarks: {
         type: DataTypes.STRING,
-        field: 'Remarks',
+        field: 'remarks',
       },
       status: {
         type: DataTypes.STRING,
-        field: 'St_status',
+        field: 'st_status',
       },
       section: {
         type: DataTypes.STRING,
-        field: 'Section',
+        field: 'section',
       },
     },
     {
