@@ -8,6 +8,8 @@ const db = require('./database')
 const app = express()
 
 const server = new ApolloServer({
+  introspection: true,
+  playground: true,
   typeDefs,
   resolvers,
   context: () => ({
