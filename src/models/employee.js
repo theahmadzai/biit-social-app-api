@@ -67,7 +67,6 @@ module.exports = sequelize =>
       },
     },
     {
-      freezeTableName: true,
       tableName: 'employee',
       timestamps: false,
     }

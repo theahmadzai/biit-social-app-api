@@ -111,7 +111,6 @@ module.exports = sequelize =>
       },
     },
     {
-      freezeTableName: true,
       tableName: 'student',
       timestamps: false,
     }
