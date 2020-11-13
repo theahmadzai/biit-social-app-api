@@ -1,4 +1,5 @@
+node_modules
 .git
 .env
 .vscode
-node_modules
+.database
