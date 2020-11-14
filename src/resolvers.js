@@ -1,4 +1,7 @@
 const { GraphQLScalarType, Kind } = require('graphql')
+const { AuthenticationError } = require('apollo-server-express')
+const bcrypt = require('bcryptjs')
+const { sign } = require('./utils/token')
 
 const resolvers = {
   Date: new GraphQLScalarType({
@@ -58,6 +61,25 @@ const resolvers = {
       const data = await ctx.db.models.Student.findAll()
 
       return data
+    },
+  },
+
+  Mutation: {
+    login: async (_, { username, password }, ctx) => {
+      const user = await ctx.db.models.Student.findOne({ regNo: username })
+      if (!user) throw new AuthenticationError(`User: '${username}' not found.`)
+
+      if (!bcrypt.compare(password, user.password)) {
+        throw new AuthenticationError('Invalid login credentials.')
+      }
+
+      const token = sign(user)
+
+      return {
+        id: user.regNo,
+        ...user,
+        token,
+      }
     },
   },
 }
