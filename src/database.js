@@ -1,15 +1,13 @@
 const { Sequelize } = require('sequelize')
+const {
+  database: { dialect, host, port, user, password, name },
+} = require('./config')
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOSTNAME,
-    port: process.env.DB_PORT,
-    dialect: process.env.DB_PROVIDER,
-  }
-)
+const sequelize = new Sequelize(name, user, password, {
+  host,
+  port,
+  dialect,
+})
 
 sequelize
   .authenticate()

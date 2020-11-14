@@ -29,7 +29,7 @@ services:
     depends_on:
       - db
     environment:
-      DB_HOSTNAME: 'database'
+      DB_HOST: 'database'
     env_file:
       - .env
 
