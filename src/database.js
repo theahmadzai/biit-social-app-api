@@ -7,6 +7,11 @@ const sequelize = new Sequelize(name, user, password, {
   host,
   port,
   dialect,
+  dialectOptions: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
 })
 
 sequelize
