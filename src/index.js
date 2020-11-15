@@ -3,6 +3,7 @@ const { ApolloServer } = require('apollo-server-express')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const db = require('./database')
+
 const {
   server: { port },
 } = require('./config')
@@ -14,9 +15,12 @@ const server = new ApolloServer({
   playground: true,
   typeDefs,
   resolvers,
-  context: () => ({
-    db,
-  }),
+  context: ({ req }) => {
+    return {
+      db,
+      token: req.headers.authorization || '',
+    }
+  },
 })
 
 server.applyMiddleware({ app })

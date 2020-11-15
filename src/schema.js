@@ -63,6 +63,7 @@ const typeDefs = gql`
     employees: [Employee]
     student(regNo: ID!): Student
     students: [Student]
+    whoami: Student!
   }
 
   type User {

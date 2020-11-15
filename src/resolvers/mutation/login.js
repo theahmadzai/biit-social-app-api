@@ -4,7 +4,7 @@ const { sign } = require('../../utils/token')
 
 module.exports = async (_, { username, password }, ctx) => {
   const user = await ctx.db.models.Student.findOne({
-    where: { regNo: username },
+    where: { regNo: username.toUpperCase() },
   })
 
   if (!user) {

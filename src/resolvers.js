@@ -24,6 +24,7 @@ const resolvers = {
     employees: require('./resolvers/query/employees'),
     student: require('./resolvers/query/student'),
     students: require('./resolvers/query/students'),
+    whoami: require('./resolvers/query/whoami'),
   },
 
   Mutation: {

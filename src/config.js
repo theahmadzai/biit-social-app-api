@@ -17,3 +17,7 @@ exports.database = {
   password: process.env.DB_PASSWORD,
   name: process.env.DB_NAME,
 }
+
+exports.auth = {
+  secret: process.env.AUTH_SECRET,
+}
