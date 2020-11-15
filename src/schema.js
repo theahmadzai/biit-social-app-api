@@ -65,6 +65,13 @@ const typeDefs = gql`
     students: [Student]
   }
 
+  type User {
+    id: String!
+    name: String!
+    email: String!
+    token: String!
+  }
+
   type Mutation {
     login(username: String!, password: String!): User!
   }

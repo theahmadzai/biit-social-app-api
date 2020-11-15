@@ -1,7 +1,4 @@
 const { GraphQLScalarType, Kind } = require('graphql')
-const { AuthenticationError } = require('apollo-server-express')
-const bcrypt = require('bcryptjs')
-const { sign } = require('./utils/token')
 
 const resolvers = {
   Date: new GraphQLScalarType({
@@ -21,66 +18,16 @@ const resolvers = {
   }),
 
   Query: {
-    course: async (_, { code }, ctx) => {
-      const data = await ctx.db.models.Course.findOne({
-        where: { code },
-      })
-
-      return data
-    },
-
-    courses: async (_, __, ctx) => {
-      const data = await ctx.db.models.Course.findAll()
-
-      return data
-    },
-
-    employee: async (_, { empNo }, ctx) => {
-      const data = await ctx.db.models.Employee.findOne({
-        where: { empNo },
-      })
-
-      return data
-    },
-
-    employees: async (_, __, ctx) => {
-      const data = await ctx.db.models.Employee.findAll()
-
-      return data
-    },
-
-    student: async (_, { regNo }, ctx) => {
-      const data = await ctx.db.models.Student.findOne({
-        where: { regNo },
-      })
-
-      return data
-    },
-
-    students: async (_, __, ctx) => {
-      const data = await ctx.db.models.Student.findAll()
-
-      return data
-    },
+    course: require('./resolvers/query/course'),
+    courses: require('./resolvers/query/courses'),
+    employee: require('./resolvers/query/employee'),
+    employees: require('./resolvers/query/employees'),
+    student: require('./resolvers/query/student'),
+    students: require('./resolvers/query/students'),
   },
 
   Mutation: {
-    login: async (_, { username, password }, ctx) => {
-      const user = await ctx.db.models.Student.findOne({ regNo: username })
-      if (!user) throw new AuthenticationError(`User: '${username}' not found.`)
-
-      if (!bcrypt.compare(password, user.password)) {
-        throw new AuthenticationError('Invalid login credentials.')
-      }
-
-      const token = sign(user)
-
-      return {
-        id: user.regNo,
-        ...user,
-        token,
-      }
-    },
+    login: require('./resolvers/mutation/login'),
   },
 }
 
