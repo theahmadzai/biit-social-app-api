@@ -1,12 +1,12 @@
 const { AuthenticationError } = require('apollo-server-express')
 const { verify } = require('./token')
 
-exports.getUser = async bearerToken => {
-  if (!bearerToken || !bearerToken.startsWith('Bearer ')) {
+exports.getUser = async authToken => {
+  if (!authToken || !authToken.startsWith('Bearer ')) {
     throw new AuthenticationError('Invalid token type.')
   }
 
-  const token = bearerToken.split('Bearer ')[1].trim()
+  const token = authToken.split('Bearer ')[1].trim()
 
   let payload
 

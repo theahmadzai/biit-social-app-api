@@ -1,5 +1,5 @@
-module.exports = async (_, __, ctx) => {
-  const data = await ctx.db.models.Employee.findAll()
+module.exports = async (_, __, { db }) => {
+  const employees = await db.models.Employee.findAll()
 
-  return data
+  return employees
 }

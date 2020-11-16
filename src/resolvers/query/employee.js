@@ -1,7 +1,7 @@
-module.exports = async (_, { empNo }, ctx) => {
-  const data = await ctx.db.models.Employee.findOne({
+module.exports = async (_, { empNo }, { db }) => {
+  const employee = await db.models.Employee.findOne({
     where: { empNo },
   })
 
-  return data
+  return employee
 }

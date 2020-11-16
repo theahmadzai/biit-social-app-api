@@ -1,7 +1,7 @@
-module.exports = async (_, { code }, ctx) => {
-  const data = await ctx.db.models.Course.findOne({
+module.exports = async (_, { code }, { db }) => {
+  const course = await db.models.Course.findOne({
     where: { code },
   })
 
-  return data
+  return course
 }

@@ -2,8 +2,8 @@ const { AuthenticationError } = require('apollo-server-express')
 const bcrypt = require('bcrypt')
 const { sign } = require('../../utils/token')
 
-module.exports = async (_, { username, password }, ctx) => {
-  const user = await ctx.db.models.Student.findOne({
+module.exports = async (_, { username, password }, { db }) => {
+  const user = await db.models.Student.findOne({
     where: { regNo: username.toUpperCase() },
   })
 
