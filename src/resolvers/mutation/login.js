@@ -2,7 +2,7 @@ const { AuthenticationError } = require('apollo-server-express')
 const bcrypt = require('bcrypt')
 const { sign } = require('../../utils/token')
 
-module.exports = async (_, { username, password }, { db }) => {
+module.exports = async (_, { input: { username, password } }, { db }) => {
   const user = await db.models.Student.findOne({
     where: { regNo: username.toUpperCase() },
   })
@@ -20,9 +20,11 @@ module.exports = async (_, { username, password }, { db }) => {
   const token = sign(user)
 
   return {
-    id: user.regNo,
-    name: `${user.dataValues.firstName.trim()} ${user.dataValues.lastName.trim()}`,
-    email: user.email,
     token,
+    user: {
+      id: user.regNo,
+      name: `${user.dataValues.firstName.trim()} ${user.dataValues.lastName.trim()}`,
+      email: user.email,
+    },
   }
 }
