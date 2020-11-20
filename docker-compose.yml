@@ -29,23 +29,17 @@ services:
     depends_on:
       - db
     environment:
-      DB_HOST: 'database'
+      MONGO_URL: 'mongodb://database:27017/biit'
     env_file:
       - .env
 
   db:
-    image: mcr.microsoft.com/mssql/server:${MSSQL_IMAGE_VERSION}
-    user: root
+    image: mongo:${MONGO_IMAGE_VERSION}
     networks:
       appnet:
         aliases:
           - database
-    ports:
-      - '1433:1433'
     volumes:
       - type: volume
         source: database
-        target: /var/opt/mssql/data
-    environment:
-      SA_PASSWORD: '${DB_PASSWORD}'
-      ACCEPT_EULA: 'Y'
+        target: /data/db
