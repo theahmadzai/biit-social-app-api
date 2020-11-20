@@ -24,6 +24,8 @@ const resolvers = {
     employees: require('./resolvers/query/employees'),
     student: require('./resolvers/query/student'),
     students: require('./resolvers/query/students'),
+    user: require('./resolvers/query/user'),
+    users: require('./resolvers/query/users'),
     whoami: require('./resolvers/query/whoami'),
   },
 

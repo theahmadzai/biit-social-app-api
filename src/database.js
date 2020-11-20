@@ -26,5 +26,6 @@ sequelize
 require('./models/course')(sequelize)
 require('./models/employee')(sequelize)
 require('./models/student')(sequelize)
+require('./models/user')(sequelize)
 
 module.exports = sequelize

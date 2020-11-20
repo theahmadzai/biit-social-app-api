@@ -3,15 +3,15 @@ const bcrypt = require('bcrypt')
 const { sign } = require('../../utils/token')
 
 module.exports = async (_, { input: { username, password } }, { db }) => {
-  const user = await db.models.Student.findOne({
-    where: { regNo: username.toUpperCase() },
+  const user = await db.models.User.findOne({
+    where: { username: username.toUpperCase() },
   })
 
   if (!user) {
     throw new AuthenticationError(`User: '${username}' not found.`)
   }
 
-  const match = await bcrypt.compare(password, bcrypt.hashSync('123', 10))
+  const match = await bcrypt.compare(password, user.password)
 
   if (!match) {
     throw new AuthenticationError('Invalid login credentials.')
@@ -21,10 +21,6 @@ module.exports = async (_, { input: { username, password } }, { db }) => {
 
   return {
     token,
-    user: {
-      id: user.regNo,
-      name: `${user.dataValues.firstName.trim()} ${user.dataValues.lastName.trim()}`,
-      email: user.email,
-    },
+    user,
   }
 }

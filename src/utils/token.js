@@ -4,7 +4,13 @@ const {
 } = require('../config')
 
 exports.sign = user =>
-  jwt.sign({ id: user.regNo }, secret, { expiresIn: '100d' })
+  jwt.sign(
+    {
+      id: user.username,
+    },
+    secret,
+    { expiresIn: '100d' }
+  )
 
 exports.verify = token =>
   new Promise((resolve, reject) => {

@@ -56,20 +56,17 @@ const typeDefs = gql`
     section: String
   }
 
-  type Query {
-    course(code: ID!): Course
-    courses: [Course]
-    employee(empNo: ID!): Employee
-    employees: [Employee]
-    student(regNo: ID!): Student
-    students: [Student]
-    whoami: Student!
+  type User {
+    username: String!
+    firstName: String!
+    middleName: String!
+    lastName: String!
+    email: String!
   }
 
-  type User {
-    id: String!
-    name: String!
-    email: String!
+  type AuthPayload {
+    token: String!
+    user: User!
   }
 
   input AuthInput {
@@ -77,9 +74,16 @@ const typeDefs = gql`
     password: String!
   }
 
-  type AuthPayload {
-    token: String!
-    user: User!
+  type Query {
+    course(code: ID!): Course
+    courses: [Course]
+    employee(empNo: ID!): Employee!
+    employees: [Employee]!
+    student(regNo: ID!): Student!
+    students: [Student]!
+    user(username: ID!): User
+    users: [User]!
+    whoami: User!
   }
 
   type Mutation {

@@ -16,7 +16,7 @@
     "start": "node src/index.js",
     "develop": "cross-env CONTAINERIZED=false nodemon src/index.js",
     "containerized": "nodemon -L src/index.js",
-    "lint": "eslint '*/**/*.{js,jsx,ts,tsx}' --quiet --fix",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" --quiet --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,json}\""
   },
   "dependencies": {
