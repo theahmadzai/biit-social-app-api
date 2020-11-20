@@ -28,7 +28,7 @@ module.exports = sequelize =>
       },
     },
     {
-      tableName: 'App_Users',
+      tableName: 'app_users',
       timestamps: false,
     }
   )
