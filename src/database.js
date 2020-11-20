@@ -1,7 +1,8 @@
 const { Sequelize } = require('sequelize')
-const {
-  database: { dialect, host, port, user, password, name },
-} = require('./config')
+const mongodb = require('mongoose')
+const { database } = require('./config')
+
+const { dialect, host, port, user, password, name, mongoUrl } = database
 
 const sequelize = new Sequelize(name, user, password, {
   host,
@@ -28,4 +29,21 @@ require('./models/employee')(sequelize)
 require('./models/student')(sequelize)
 require('./models/user')(sequelize)
 
-module.exports = sequelize
+const mongoose = mongodb.connect(mongoUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+
+mongoose.then(
+  () => {
+    console.log(`Connected to ${mongoUrl}`)
+  },
+  () => {
+    console.log('Failed to connect to mongodb.')
+  }
+)
+
+module.exports = {
+  sequelize,
+  mongoose,
+}
