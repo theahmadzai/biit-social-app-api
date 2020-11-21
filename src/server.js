@@ -1,9 +1,9 @@
 const express = require('express')
 const { ApolloServer } = require('apollo-server-express')
 const routes = require('./routes')
-const typeDefs = require('./schema')
+const typeDefs = require('./typeDefs')
 const resolvers = require('./resolvers')
-const { sequelize, mongoose } = require('./database')
+const db = require('./database')
 
 const app = express()
 
@@ -15,8 +15,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => ({
-    db: sequelize,
-    mongoose,
+    db,
     authToken: req.headers.authorization || '',
   }),
 })
