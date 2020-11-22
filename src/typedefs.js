@@ -3,6 +3,14 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
   scalar Date
 
+  enum Role {
+    EMPLOYEE
+    STUDENT
+  }
+
+  directive @authenticated on FIELD_DEFINITION
+  directive @authorized(role: Role! = EMPLOYEE) on FIELD_DEFINITION
+
   type Course {
     code: ID!
     title: String!
@@ -86,8 +94,8 @@ module.exports = gql`
     student(regNo: ID!): Student!
     students: [Student]!
     user(username: ID!): User
-    users: [User]!
-    whoami: User!
+    users: [User]! @authenticated
+    whoami: User! @authenticated
   }
 
   type Mutation {

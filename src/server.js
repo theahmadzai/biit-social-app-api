@@ -5,6 +5,7 @@ const routes = require('./routes')
 const typeDefs = require('./typedefs')
 const resolvers = require('./resolvers')
 const database = require('./database')
+const { AuthenticatedDirective, AuthorizedDirective } = require('./directives')
 const { getUserFromToken } = require('./utils/auth')
 
 const app = express()
@@ -16,6 +17,10 @@ const server = new ApolloServer({
   playground: true,
   typeDefs,
   resolvers,
+  schemaDirectives: {
+    authenticated: AuthenticatedDirective,
+    authorized: AuthorizedDirective,
+  },
   formatError(error) {
     // Log critical errors here using (error instanceof CriticalError)
     return error
