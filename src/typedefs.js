@@ -2,11 +2,13 @@ const { gql } = require('apollo-server-express')
 
 module.exports = gql`
   scalar Date
+
   type Course {
     code: ID!
     title: String!
     description: String!
   }
+
   type Employee {
     empNo: ID
     firstName: String
@@ -24,6 +26,7 @@ module.exports = gql`
     status: String
     nic: String
   }
+
   type Student {
     regNo: ID
     appNo: String
@@ -52,6 +55,11 @@ module.exports = gql`
     status: String
     section: String
   }
+
+  type Notification {
+    title: String!
+  }
+
   type User {
     username: String!
     firstName: String!
@@ -59,14 +67,17 @@ module.exports = gql`
     lastName: String!
     email: String!
   }
+
   type AuthPayload {
     token: String!
     user: User!
   }
+
   input AuthInput {
     username: String!
     password: String!
   }
+
   type Query {
     course(code: ID!): Course
     courses: [Course]
@@ -78,7 +89,13 @@ module.exports = gql`
     users: [User]!
     whoami: User!
   }
+
   type Mutation {
     login(input: AuthInput!): AuthPayload!
+    pushNotification(title: String!): Notification!
+  }
+
+  type Subscription {
+    notification: Notification!
   }
 `

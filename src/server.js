@@ -1,9 +1,11 @@
+const http = require('http')
 const express = require('express')
 const { ApolloServer } = require('apollo-server-express')
 const routes = require('./routes')
 const typeDefs = require('./typedefs')
 const resolvers = require('./resolvers')
-const db = require('./database')
+const database = require('./database')
+const { getUserFromToken } = require('./utils/auth')
 
 const app = express()
 
@@ -14,12 +16,42 @@ const server = new ApolloServer({
   playground: true,
   typeDefs,
   resolvers,
-  context: ({ req }) => ({
-    db,
-    authToken: req.headers.authorization || '',
-  }),
+  formatError(error) {
+    // Log critical errors here using (error instanceof CriticalError)
+    return error
+  },
+  subscriptions: {
+    async onConnect(connectionParams) {
+      const user = await getUserFromToken(connectionParams.authToken)
+
+      if (!user) {
+        throw new Error('nop')
+      }
+
+      return {
+        user,
+      }
+    },
+  },
+  async context({ req, connection }) {
+    const context = { db: database }
+
+    if (connection) {
+      return { ...context, ...connection.context }
+    }
+
+    const user = await getUserFromToken(req.headers.authorization)
+
+    return {
+      ...context,
+      user,
+    }
+  },
 })
 
-server.applyMiddleware({ app })
+const httpServer = http.createServer(app)
 
-module.exports = app
+server.applyMiddleware({ app })
+server.installSubscriptionHandlers(httpServer)
+
+module.exports = httpServer

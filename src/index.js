@@ -1,8 +1,8 @@
-const app = require('./server')
+const server = require('./server')
 const {
   server: { port },
 } = require('./config')
 
-app.listen(port, () => {
-  console.log(`App started on: http://localhost:${port}`)
+server.listen(port, () => {
+  console.log(`Server started on: http://localhost:${port}`)
 })
