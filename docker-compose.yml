@@ -28,8 +28,6 @@ services:
         target: /home/app/node_modules
     depends_on:
       - db
-    environment:
-      MONGO_URL: 'mongodb://database:27017/biit'
     env_file:
       - .env
 
