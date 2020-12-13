@@ -76,6 +76,8 @@ module.exports = gql`
     role: String!
     groups: [Group]!
     groupsOwned: [Group]!
+    posts: [Post]!
+    comments: [Comment]!
   }
 
   type Group {

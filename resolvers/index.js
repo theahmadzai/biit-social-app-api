@@ -20,6 +20,8 @@ const resolvers = {
   User: {
     groups: async user => await user.getGroups(),
     groupsOwned: async user => await user.getGroupsOwned(),
+    posts: async user => await user.getPosts(),
+    comments: async user => await user.getComments(),
   },
 
   Group: {
@@ -80,7 +82,7 @@ const resolvers = {
     },
     whoami: async (_, __, { db, user }) => {
       return await db.models.User.findOne({
-        where: { username: user.id },
+        where: { id: user.id },
       })
     },
   },
