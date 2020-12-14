@@ -81,6 +81,7 @@ module.exports = gql`
   }
 
   type Group {
+    id: ID!
     name: String!
     description: String!
     logo: String!
@@ -93,6 +94,7 @@ module.exports = gql`
   }
 
   type Post {
+    id: ID!
     text: String!
     media: String!
     user: User!
@@ -101,6 +103,7 @@ module.exports = gql`
   }
 
   type Comment {
+    id: ID!
     content: String!
     user: User!
     post: Post!
