@@ -77,6 +77,11 @@ const resolvers = {
     groups: async (_, __, { db }) => {
       return await db.models.Group.findAll()
     },
+    group: async (_, { id }, { db }) => {
+      return await db.models.Group.findOne({
+        where: { id },
+      })
+    },
     posts: async (_, __, { db }) => {
       return await db.models.Post.findAll()
     },

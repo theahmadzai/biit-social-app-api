@@ -95,6 +95,7 @@ module.exports = gql`
 
   type Post {
     id: ID!
+    title: String!
     text: String!
     media: String!
     user: User!
@@ -126,10 +127,12 @@ module.exports = gql`
     employees: [Employee]!
     student(regNo: ID!): Student!
     students: [Student]!
-    user(username: ID!): User
     users: [User]!
+    user(username: ID!): User
     groups: [Group]!
+    group(id: ID!): Group!
     posts: [Post]!
+    post(id: ID!): Post!
     whoami: User! @authenticated
   }
 

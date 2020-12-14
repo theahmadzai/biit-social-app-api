@@ -10,7 +10,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'group_membership',
-      [...Array(20)].map(() => ({
+      [...Array(30)].map(() => ({
         userId: userIds[Math.floor(Math.random() * userIds.length)],
         groupId: groupIds[Math.floor(Math.random() * groupIds.length)],
         createdAt: new Date(),

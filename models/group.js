@@ -26,6 +26,7 @@ module.exports = sequelize => {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        onDelete: 'NO ACTION',
       },
     },
     {
