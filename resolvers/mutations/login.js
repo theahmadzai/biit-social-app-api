@@ -1,6 +1,6 @@
 const { AuthenticationError } = require('apollo-server-express')
 const bcrypt = require('bcrypt')
-const { sign } = require('../../utils/token')
+const { sign } = require('../../server/token')
 
 module.exports = async (_, { input: { username, password } }, { db }) => {
   const user = await db.models.User.findOne({

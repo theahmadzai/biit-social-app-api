@@ -1,12 +1,12 @@
 const http = require('http')
 const express = require('express')
-const { ApolloServer } = require('apollo-server-express')
+const { ApolloServer, AuthenticationError } = require('apollo-server-express')
 const routes = require('./routes')
 const typeDefs = require('./typedefs')
 const resolvers = require('../resolvers')
 const database = require('../models')
 const { AuthenticatedDirective, AuthorizedDirective } = require('./directives')
-const { getUserFromToken } = require('../utils/auth')
+const { getUserFromToken } = require('./token')
 
 const app = express()
 
@@ -30,7 +30,7 @@ const server = new ApolloServer({
       const user = await getUserFromToken(connectionParams.authToken)
 
       if (!user) {
-        throw new Error('nop')
+        throw new AuthenticationError('Not authenticated.')
       }
 
       return {

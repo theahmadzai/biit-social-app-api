@@ -1,8 +1,8 @@
+const { defaultTypeResolver } = require('graphql')
 const {
   SchemaDirectiveVisitor,
   AuthenticationError,
 } = require('apollo-server-express')
-const { defaultTypeResolver } = require('graphql')
 
 exports.AuthenticatedDirective = class extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
@@ -11,6 +11,14 @@ exports.AuthenticatedDirective = class extends SchemaDirectiveVisitor {
     field.resolve = async (root, args, context, info) => {
       if (!context.user) {
         throw new AuthenticationError('Not authenticated.')
+      }
+
+      const user = await context.db.models.User.findOne({
+        where: { id: context.user.id },
+      })
+
+      if (!user) {
+        throw new AuthenticationError(`This user doesn't exist.`)
       }
 
       return resolver(root, args, context, info)

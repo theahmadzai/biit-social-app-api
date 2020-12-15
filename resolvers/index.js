@@ -85,6 +85,11 @@ const resolvers = {
     posts: async (_, __, { db }) => {
       return await db.models.Post.findAll()
     },
+    post: async (_, { id }, { db }) => {
+      return await db.models.Post.findOne({
+        where: { id },
+      })
+    },
     whoami: async (_, __, { db, user }) => {
       return await db.models.User.findOne({
         where: { id: user.id },
@@ -95,6 +100,7 @@ const resolvers = {
   Mutation: {
     login: require('./mutations/login'),
     pushNotification: require('./mutations/push-notification'),
+    createPost: require('./mutations/create-post'),
   },
 
   Subscription: {

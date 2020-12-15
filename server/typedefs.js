@@ -78,6 +78,8 @@ module.exports = gql`
     groupsOwned: [Group]!
     posts: [Post]!
     comments: [Comment]!
+    createdAt: String!
+    updatedAt: String!
   }
 
   type Group {
@@ -101,6 +103,8 @@ module.exports = gql`
     user: User!
     group: Group!
     comments: [Comment]
+    createdAt: String!
+    updatedAt: String!
   }
 
   type Comment {
@@ -108,6 +112,8 @@ module.exports = gql`
     content: String!
     user: User!
     post: Post!
+    createdAt: String!
+    updatedAt: String!
   }
 
   type AuthPayload {
@@ -136,9 +142,17 @@ module.exports = gql`
     whoami: User! @authenticated
   }
 
+  input PostInput {
+    title: String!
+    text: String!
+    media: String!
+    group: ID!
+  }
+
   type Mutation {
     login(input: AuthInput!): AuthPayload!
     pushNotification(title: String!): Notification!
+    createPost(input: PostInput!): Post! @authenticated
   }
 
   type Subscription {
