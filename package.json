@@ -33,7 +33,8 @@
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
-    "tedious": "^9.2.1"
+    "tedious": "^9.2.1",
+    "uniqid": "^5.2.0"
   },
   "devDependencies": {
     "eslint": "^7.13.0",
