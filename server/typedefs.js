@@ -95,13 +95,19 @@ module.exports = gql`
     updatedAt: String!
   }
 
+  type File {
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
+
   type Post {
     id: ID!
     title: String!
     text: String!
-    media: String!
     user: User!
     group: Group!
+    media: [File]
     comments: [Comment]
     createdAt: String!
     updatedAt: String!
