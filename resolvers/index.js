@@ -1,5 +1,4 @@
 const { GraphQLScalarType, Kind } = require('graphql')
-const fs = require('fs')
 
 const resolvers = {
   Date: new GraphQLScalarType({
@@ -35,10 +34,7 @@ const resolvers = {
     user: async post => await post.getUser(),
     group: async post => await post.getGroup(),
     comments: async post => await post.getComments(),
-    media: async ({ media }) => {
-      const data = fs.readFileSync(media, 'base64')
-      return data
-    },
+    media: async post => await post.getMedia(),
   },
 
   Comment: {
