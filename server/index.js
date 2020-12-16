@@ -10,6 +10,7 @@ const { getUserFromToken } = require('./token')
 
 const app = express()
 
+app.use(express.static('uploads'))
 app.use('/', routes)
 
 const server = new ApolloServer({
