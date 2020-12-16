@@ -15,7 +15,6 @@ module.exports = {
       [...Array(30)].map(() => ({
         title: faker.lorem.sentence(),
         text: faker.lorem.paragraph(),
-        media: faker.image.imageUrl(),
         userId: userIds[Math.floor(Math.random() * userIds.length)],
         groupId: groupIds[Math.floor(Math.random() * groupIds.length)],
         createdAt: new Date(),
