@@ -17,10 +17,6 @@ module.exports = sequelize => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      media: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -36,13 +32,17 @@ module.exports = sequelize => {
     }
   )
 
-  Post.associate = ({ User, Group, Comment }) => {
+  Post.associate = ({ User, Group, Media, Comment }) => {
     Post.belongsTo(User, {
       foreignKey: 'userId',
     })
 
     Post.belongsTo(Group, {
       foreignKey: 'groupId',
+    })
+
+    Post.hasMany(Media, {
+      foreignKey: 'postId',
     })
 
     Post.hasMany(Comment, {

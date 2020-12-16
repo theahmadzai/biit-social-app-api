@@ -22,6 +22,7 @@ models.User = require('./user')(sequelize)
 models.Group = require('./group')(sequelize)
 models.Post = require('./post')(sequelize)
 models.Comment = require('./comment')(sequelize)
+models.Media = require('./media')(sequelize)
 
 Object.keys(models).forEach(modelName => {
   if (models[modelName].associate) {
