@@ -74,6 +74,7 @@ module.exports = gql`
     username: String!
     password: String!
     role: String!
+    image: String
     groups: [Group]!
     groupsOwned: [Group]!
     posts: [Post]!
@@ -96,6 +97,7 @@ module.exports = gql`
   }
 
   type File {
+    id: ID!
     filename: String!
     mimetype: String!
     encoding: String!
@@ -135,16 +137,16 @@ module.exports = gql`
   type Query {
     course(code: ID!): Course
     courses: [Course]
-    employee(empNo: ID!): Employee!
+    employee(empNo: ID!): Employee
     employees: [Employee]!
-    student(regNo: ID!): Student!
+    student(regNo: ID!): Student
     students: [Student]!
     users: [User]!
-    user(username: ID!): User
+    user(id: ID!): User
     groups: [Group]!
-    group(id: ID!): Group!
+    group(id: ID!): Group
     posts: [Post]!
-    post(id: ID!): Post!
+    post(id: ID!): Post
     whoami: User! @authenticated
   }
 

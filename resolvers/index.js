@@ -67,9 +67,9 @@ const resolvers = {
     students: async (_, __, { db }) => {
       return await db.models.Student.findAll()
     },
-    user: async (_, { username }, { db }) => {
+    user: async (_, { id }, { db }) => {
       return await db.models.User.findOne({
-        where: { username },
+        where: { id },
       })
     },
     users: async (_, __, { db }) => {
