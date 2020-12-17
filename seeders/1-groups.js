@@ -8,11 +8,11 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'groups',
-      [...Array(10)].map(() => ({
+      [...Array(40)].map(() => ({
         name: faker.name.firstName(),
         description: faker.lorem.sentence(),
-        logo: faker.image.imageUrl(),
-        cover: faker.image.imageUrl(),
+        logo: `fake/image${Math.floor(Math.random() * 3)}.jpg`,
+        cover: `fake/image${Math.floor(Math.random() * 3)}.jpg`,
         userId: userIds[Math.floor(Math.random() * userIds.length)],
         createdAt: new Date(),
         updatedAt: new Date(),
