@@ -1,4 +1,5 @@
 const { GraphQLScalarType, Kind } = require('graphql')
+const { User, Group, Media } = require('../models').models
 
 const resolvers = {
   Date: new GraphQLScalarType({
@@ -31,15 +32,18 @@ const resolvers = {
   },
 
   Post: {
-    user: async post => await post.getUser(),
-    group: async post => await post.getGroup(),
-    comments: async post => await post.getComments(),
-    media: async post => await post.getMedia(),
+    user: async post => ('User' in post ? post.User : await post.getUser()),
+    group: async post => ('Group' in post ? post.Group : await post.getGroup()),
+    comments: async post =>
+      'Comments' in post ? post.Comments : await post.getComments(),
+    media: async post => ('Media' in post ? post.Media : await post.getMedia()),
   },
 
   Comment: {
-    user: async comment => await comment.getUser(),
-    post: async comment => await comment.getPost(),
+    user: async comment =>
+      'User' in comment ? comment.User : await comment.getUser(),
+    post: async comment =>
+      'Post' in comment ? comment.Post : await comment.getPost(),
   },
 
   Query: {
@@ -96,12 +100,63 @@ const resolvers = {
         where: { id: user.id },
       })
     },
+    getUserGroupsOwned: async (_, { id }, { db }) => {
+      return await db.models.Group.findAll({
+        where: { userId: id },
+      })
+    },
+    getUserGroups: async (_, { id }, { db }) => {
+      return (
+        await db.models.User.findOne({
+          where: { id },
+          include: {
+            model: Group,
+          },
+        })
+      ).Groups
+    },
+    getUserPosts: async (_, { id }, { db }) => {
+      return await db.models.Post.findAll({
+        where: { userId: id },
+      })
+    },
+    getUserComments: async (_, { id }, { db }) => {
+      return await db.models.Comment.findAll({
+        where: { userId: id },
+      })
+    },
+    getGroupPosts: async (_, { id }, { db }) => {
+      return await db.models.Post.findAll({
+        where: { groupId: id },
+        include: [Media, User],
+      })
+    },
+    getGroupMembers: async (_, { id }, { db }) => {
+      return (
+        await db.models.Group.findOne({
+          where: { id },
+          include: {
+            model: User,
+            as: 'Members',
+          },
+        })
+      ).Members
+    },
+    getPostComments: async (_, { id }, { db }) => {
+      return await db.models.Comment.findAll({
+        where: { postId: id },
+        include: {
+          model: User,
+        },
+      })
+    },
   },
 
   Mutation: {
     login: require('./mutations/login'),
     pushNotification: require('./mutations/push-notification'),
     createPost: require('./mutations/create-post'),
+    createComment: require('./mutations/create-comment'),
   },
 
   Subscription: {

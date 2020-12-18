@@ -42,7 +42,7 @@ module.exports = sequelize => {
     })
 
     Group.belongsToMany(User, {
-      as: 'members',
+      as: 'Members',
       foreignKey: 'groupId',
       through: 'group_membership',
       onDelete: 'NO ACTION',

@@ -147,6 +147,13 @@ module.exports = gql`
     group(id: ID!): Group
     posts: [Post]!
     post(id: ID!): Post
+    getUserGroupsOwned(id: ID!): [Group]
+    getUserGroups(id: ID!): [Group]
+    getUserPosts(id: ID!): [Post]
+    getUserComments(id: ID!): [Comment]
+    getGroupPosts(id: ID!): [Post]
+    getGroupMembers(id: ID!): [User]
+    getPostComments(id: ID!): [Comment]
     whoami: User! @authenticated
   }
 
@@ -157,10 +164,16 @@ module.exports = gql`
     group: ID!
   }
 
+  input CommentInput {
+    content: String!
+    post: ID!
+  }
+
   type Mutation {
     login(input: AuthInput!): AuthPayload!
     pushNotification(title: String!): Notification!
     createPost(input: PostInput!): Post! @authenticated
+    createComment(input: CommentInput!): Comment! @authenticated
   }
 
   type Subscription {

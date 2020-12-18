@@ -12,7 +12,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'comments',
-      [...Array(30)].map(() => ({
+      [...Array(200)].map(() => ({
         content: faker.lorem.sentence(),
         userId: userIds[Math.floor(Math.random() * userIds.length)],
         postId: postIds[Math.floor(Math.random() * postIds.length)],

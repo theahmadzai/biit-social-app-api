@@ -40,5 +40,4 @@ sequelize
     console.error('Unable to connect to the database:', err)
   })
 
-exports.models = models
 module.exports = sequelize
