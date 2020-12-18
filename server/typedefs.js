@@ -105,7 +105,6 @@ module.exports = gql`
 
   type Post {
     id: ID!
-    title: String!
     text: String!
     user: User!
     group: Group!

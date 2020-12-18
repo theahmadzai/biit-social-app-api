@@ -14,7 +14,6 @@ module.exports = {
         ]
 
         return {
-          title: faker.lorem.sentence(),
           text: faker.lorem.paragraph(),
           userId: userId,
           groupId: groupId,
