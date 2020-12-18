@@ -2,7 +2,7 @@ const fs = require('fs')
 const uniqid = require('uniqid')
 
 module.exports = async (_, { input }, { db, user }) => {
-  const { title, text, media, group } = input
+  const { text, media, group } = input
 
   const base64Data = media.replace(/^data:image\/svg\+xml;base64,/, '')
 
@@ -18,7 +18,6 @@ module.exports = async (_, { input }, { db, user }) => {
   })
 
   return await db.models.Post.create({
-    title,
     text,
     media: imageName,
     groupId: group,

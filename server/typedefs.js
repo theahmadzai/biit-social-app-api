@@ -157,7 +157,6 @@ module.exports = gql`
   }
 
   input PostInput {
-    title: String!
     text: String!
     media: String!
     group: ID!
