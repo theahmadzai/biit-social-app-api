@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server-express')
 
 module.exports = gql`
+  scalar Upload
   scalar Date
 
   enum Role {
@@ -158,7 +159,7 @@ module.exports = gql`
 
   input PostInput {
     text: String!
-    media: String!
+    media: [Upload!]!
     group: ID!
   }
 
