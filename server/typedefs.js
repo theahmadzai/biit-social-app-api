@@ -106,7 +106,7 @@ module.exports = gql`
 
   type Post {
     id: ID!
-    text: String!
+    text: String
     user: User!
     group: Group!
     media: [File]
@@ -160,12 +160,12 @@ module.exports = gql`
   input PostInput {
     text: String!
     media: [Upload!]!
-    group: ID!
+    groupId: ID!
   }
 
   input CommentInput {
     content: String!
-    post: ID!
+    postId: ID!
   }
 
   type Mutation {

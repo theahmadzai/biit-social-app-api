@@ -11,7 +11,6 @@ module.exports = sequelize => {
       },
       text: {
         type: DataTypes.TEXT,
-        allowNull: false,
       },
       userId: {
         type: DataTypes.INTEGER,

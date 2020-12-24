@@ -130,6 +130,7 @@ const resolvers = {
     getGroupPosts: async (_, { id }, { db }) => {
       return await db.models.Post.findAll({
         where: { groupId: id },
+        order: [['id', 'DESC']],
         include: [Media, User],
       })
     },

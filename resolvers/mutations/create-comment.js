@@ -1,9 +1,9 @@
 module.exports = async (_, { input }, { db, user }) => {
-  const { content, post } = input
+  const { content, postId } = input
 
   return await db.models.Comment.create({
     content,
-    postId: post,
+    postId,
     userId: user.id,
   })
 }

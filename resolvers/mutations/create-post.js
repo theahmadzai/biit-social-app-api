@@ -3,14 +3,14 @@ const uniqid = require('uniqid')
 const mime = require('mime-types')
 
 module.exports = async (_, { input }, { db, user }) => {
-  const { text, media, group } = input
+  const { text, media, groupId } = input
 
   const files = await Promise.all(media)
 
   const post = await db.models.Post.create({
-    text,
+    text: text.trim() && text.length ? text : null,
+    groupId,
     userId: user.id,
-    groupId: group,
   })
 
   await Promise.all(
