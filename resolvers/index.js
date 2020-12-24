@@ -1,7 +1,9 @@
 const { GraphQLScalarType, Kind } = require('graphql')
+const { GraphQLUpload } = require('graphql-upload')
 const { User, Group, Media } = require('../models').models
 
 const resolvers = {
+  Upload: GraphQLUpload,
   Date: new GraphQLScalarType({
     name: 'Date',
     parseValue(value) {

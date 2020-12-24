@@ -1,6 +1,7 @@
 const http = require('http')
 const express = require('express')
 const { ApolloServer, AuthenticationError } = require('apollo-server-express')
+const { graphqlUploadExpress } = require('graphql-upload')
 const routes = require('./routes')
 const typeDefs = require('./typedefs')
 const resolvers = require('../resolvers')
@@ -10,12 +11,14 @@ const { getUserFromToken } = require('./token')
 
 const app = express()
 
-app.use(express.static('uploads'))
 app.use('/', routes)
+app.use(express.static('uploads'))
+app.use(graphqlUploadExpress())
 
 const server = new ApolloServer({
   introspection: true,
   playground: true,
+  uploads: false,
   typeDefs,
   resolvers,
   schemaDirectives: {
