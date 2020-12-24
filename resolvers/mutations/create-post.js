@@ -1,26 +1,51 @@
 const fs = require('fs')
 const uniqid = require('uniqid')
+const mime = require('mime-types')
 
 module.exports = async (_, { input }, { db, user }) => {
   const { text, media, group } = input
 
-  const base64Data = media.replace(/^data:image\/svg\+xml;base64,/, '')
+  const files = await Promise.all(media)
 
-  const imageName = `${uniqid()}.svg`
-
-  fs.writeFile(`uploads/${imageName}`, base64Data, 'base64', err => {
-    if (err) {
-      console.log(err)
-      return
-    }
-
-    console.log('Done')
-  })
-
-  return await db.models.Post.create({
+  const post = await db.models.Post.create({
     text,
-    media: imageName,
-    groupId: group,
     userId: user.id,
+    groupId: group,
   })
+
+  await Promise.all(
+    files.map(({ mimetype, encoding, createReadStream }) => {
+      const readStream = createReadStream()
+      const filename = `${uniqid()}.${mime.extension(mimetype)}`
+      const path = `uploads/${filename}`
+
+      return new Promise((resolve, reject) => {
+        const writeStream = fs.createWriteStream(path)
+
+        writeStream.on('finish', async () => {
+          await db.models.Media.create({
+            filename,
+            mimetype,
+            encoding,
+            postId: post.id,
+          })
+          resolve()
+        })
+
+        writeStream.on('error', error => {
+          fs.unlink(path, () => {
+            reject(error)
+          })
+        })
+
+        readStream.on('error', error => {
+          writeStream.destroy(error)
+        })
+
+        readStream.pipe(writeStream)
+      })
+    })
+  )
+
+  return post
 }
