@@ -6,8 +6,8 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'users',
-      [...Array(100)].map(() => ({
-        username: faker.internet.userName(),
+      [...Array(100)].map((...[, index]) => ({
+        username: `2017-ARID-${100 + index}`,
         password:
           '$2b$10$OGsUmtSzxGfTzK0yAS8bh.ZQ0rqnCua.cyvVZG6iBI2T96I2Fg20m',
         role: roles[Math.floor(Math.random() * roles.length)],
