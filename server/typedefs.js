@@ -2,7 +2,6 @@ const { gql } = require('apollo-server-express')
 
 module.exports = gql`
   scalar Upload
-  scalar Date
 
   enum Role {
     STUDENT
@@ -19,62 +18,11 @@ module.exports = gql`
     description: String!
   }
 
-  type Employee {
-    empNo: ID
-    firstName: String
-    lastName: String
-    middleName: String
-    Designation: String
-    PermanentAddress: String
-    PermanentCity: String
-    CurrentAddress: String
-    CurrentCity: String
-    phone: String
-    email: String
-    joiningDate: Date
-    resignDate: Date
-    status: String
-    nic: String
-  }
-
-  type Student {
-    regNo: ID
-    appNo: String
-    firstName: String
-    lastName: String
-    middleName: String
-    fatherName: String
-    email: String
-    sex: String
-    uaarRegNo: String
-    maritalStatus: String
-    birthDate: String
-    nic: String
-    currentAddress: String
-    currentCity: String
-    permanentAddress: String
-    permanentCity: String
-    phone: String
-    admissionStatus: String
-    session: String
-    prefOne: String
-    prefTwo: String
-    admissionDate: Date
-    semester: String
-    remarks: String
-    status: String
-    section: String
-  }
-
-  type Notification {
-    title: String!
-  }
-
-  type User {
+  interface User {
     id: ID!
     username: String!
     password: String!
-    role: String!
+    role: Role!
     image: String
     groups: [Group]!
     groupsOwned: [Group]!
@@ -82,6 +30,87 @@ module.exports = gql`
     comments: [Comment]!
     createdAt: String!
     updatedAt: String!
+  }
+
+  type Student implements User {
+    id: ID!
+    username: String!
+    password: String!
+    role: Role!
+    image: String
+    groups: [Group]!
+    groupsOwned: [Group]!
+    posts: [Post]!
+    comments: [Comment]!
+    createdAt: String!
+    updatedAt: String!
+    firstName: String
+    lastName: String
+    middleName: String
+    sex: String
+    birthDate: String
+    currentAddress: String
+    currentCity: String
+    session: String
+    admissionDate: String
+    semester: String
+    remarks: String
+    status: String
+    section: String
+  }
+
+  type Teacher implements User {
+    id: ID!
+    username: String!
+    password: String!
+    role: Role!
+    image: String
+    groups: [Group]!
+    groupsOwned: [Group]!
+    posts: [Post]!
+    comments: [Comment]!
+    createdAt: String!
+    updatedAt: String!
+    firstName: String
+    lastName: String
+    middleName: String
+    designation: String
+    currentAddress: String
+    currentCity: String
+    phone: String
+    email: String
+    joiningDate: String
+    resignDate: String
+    status: String
+  }
+
+  type Admin implements User {
+    id: ID!
+    username: String!
+    password: String!
+    role: Role!
+    image: String
+    groups: [Group]!
+    groupsOwned: [Group]!
+    posts: [Post]!
+    comments: [Comment]!
+    createdAt: String!
+    updatedAt: String!
+    firstName: String
+    lastName: String
+    middleName: String
+    designation: String
+    currentAddress: String
+    currentCity: String
+    phone: String
+    email: String
+    joiningDate: String
+    resignDate: String
+    status: String
+  }
+
+  type Notification {
+    title: String!
   }
 
   type Group {
@@ -137,8 +166,8 @@ module.exports = gql`
   type Query {
     course(code: ID!): Course
     courses: [Course]
-    employee(empNo: ID!): Employee
-    employees: [Employee]!
+    teacher(empNo: ID!): Teacher
+    teachers: [Teacher]!
     student(regNo: ID!): Student
     students: [Student]!
     users: [User]!

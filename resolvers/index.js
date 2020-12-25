@@ -1,31 +1,30 @@
-const { GraphQLScalarType, Kind } = require('graphql')
 const { GraphQLUpload } = require('graphql-upload')
 const { User, Group, Media } = require('../models').models
 
+const UserResolvers = {
+  groups: async user => await user.getGroups(),
+  groupsOwned: async user => await user.getGroupsOwned(),
+  posts: async user => await user.getPosts(),
+  comments: async user => await user.getComments(),
+}
+
 const resolvers = {
   Upload: GraphQLUpload,
-  Date: new GraphQLScalarType({
-    name: 'Date',
-    parseValue(value) {
-      return new Date(value)
-    },
-    serialize(value) {
-      return value.getTime()
-    },
-    parseLiteral(ast) {
-      if (ast.kind === Kind.INT) {
-        return parseInt(ast.value, 10)
-      }
-      return null
-    },
-  }),
 
   User: {
-    groups: async user => await user.getGroups(),
-    groupsOwned: async user => await user.getGroupsOwned(),
-    posts: async user => await user.getPosts(),
-    comments: async user => await user.getComments(),
+    __resolveType: ({ role }) => {
+      if (role === 'STUDENT') return 'Student'
+      if (role === 'TEACHER') return 'Teacher'
+      if (role === 'ADMIN') return 'Admin'
+      return 'Student'
+    },
   },
+
+  Student: { ...UserResolvers },
+
+  Teacher: { ...UserResolvers },
+
+  Admin: { ...UserResolvers },
 
   Group: {
     owner: async group => await group.getOwner(),
@@ -57,12 +56,12 @@ const resolvers = {
     courses: async (_, __, { db }) => {
       return await db.models.Course.findAll()
     },
-    employee: async (_, { empNo }, { db }) => {
+    teacher: async (_, { empNo }, { db }) => {
       return await db.models.Employee.findOne({
         where: { empNo },
       })
     },
-    employees: async (_, __, { db }) => {
+    teachers: async (_, __, { db }) => {
       return await db.models.Employee.findAll()
     },
     student: async (_, { regNo }, { db }) => {

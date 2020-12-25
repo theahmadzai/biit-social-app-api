@@ -1,8 +1,6 @@
-const faker = require('faker')
-
 module.exports = {
   up: async queryInterface => {
-    const roles = ['student', 'teacher', 'admin']
+    const roles = ['STUDENT', 'TEACHER', 'ADMIN']
 
     await queryInterface.bulkInsert(
       'users',

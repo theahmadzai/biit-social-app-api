@@ -21,6 +21,9 @@ module.exports = sequelize => {
       role: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          isUppercase: true,
+        },
       },
       image: {
         type: DataTypes.STRING,
