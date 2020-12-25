@@ -158,8 +158,8 @@ module.exports = gql`
   }
 
   input PostInput {
-    text: String!
-    media: [Upload!]!
+    text: String
+    media: [Upload!]
     groupId: ID!
   }
 

@@ -1,17 +1,25 @@
 const fs = require('fs')
 const uniqid = require('uniqid')
 const mime = require('mime-types')
+const { UserInputError } = require('apollo-server-express')
 
 module.exports = async (_, { input }, { db, user }) => {
   const { text, media, groupId } = input
 
-  const files = await Promise.all(media)
+  const postObject = { groupId, userId: user.id }
 
-  const post = await db.models.Post.create({
-    text: text.trim() && text.length ? text : null,
-    groupId,
-    userId: user.id,
-  })
+  if (!media || !media.length) {
+    if (!text || !text.trim().length) {
+      throw new UserInputError('No post inputs are filled.')
+    }
+    postObject.text = text
+  }
+
+  const post = await db.models.Post.create(postObject)
+
+  if (!media) return post
+
+  const files = await Promise.all(media)
 
   await Promise.all(
     files.map(({ mimetype, encoding, createReadStream }) => {
