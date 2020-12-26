@@ -9,7 +9,7 @@ module.exports = {
       .then(res => res[0].map(({ id }) => id))
 
     await queryInterface.bulkInsert(
-      'group_membership',
+      'user_group',
       [...Array(100)].map(() => ({
         userId: userIds[Math.floor(Math.random() * userIds.length)],
         groupId: groupIds[Math.floor(Math.random() * groupIds.length)],
@@ -21,6 +21,6 @@ module.exports = {
   },
 
   down: async queryInterface => {
-    await queryInterface.bulkDelete('group_membership', null, {})
+    await queryInterface.bulkDelete('user_group', null, {})
   },
 }
