@@ -19,11 +19,8 @@ module.exports = sequelize => {
         allowNull: false,
       },
       role: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(['STUDENT', 'TEACHER', 'ADMIN']),
         allowNull: false,
-        validate: {
-          isUppercase: true,
-        },
       },
       image: {
         type: DataTypes.STRING,
@@ -35,15 +32,28 @@ module.exports = sequelize => {
     }
   )
 
-  User.associate = ({ Group, Post, Comment }) => {
+  User.associate = ({ Friendship, Group, UserGroup, Post, Comment }) => {
+    User.belongsToMany(User, {
+      as: 'Requestees',
+      through: Friendship,
+      foreignKey: 'requesterId',
+    })
+
+    User.belongsToMany(User, {
+      as: 'Requesters',
+      through: Friendship,
+      foreignKey: 'requesteeId',
+    })
+
     User.hasMany(Group, {
       as: 'groupsOwned',
       foreignKey: 'userId',
+      onDelete: 'NO ACTION',
     })
 
     User.belongsToMany(Group, {
       foreignKey: 'userId',
-      through: 'group_membership',
+      through: UserGroup,
     })
 
     User.hasMany(Post, {
