@@ -15,14 +15,17 @@ const sequelize = new Sequelize(database, username, password, {
 })
 
 const models = {}
-// require('./course')(sequelize)
-// require('./employee')(sequelize)
-// require('./student')(sequelize)
+
+models.Friendship = require('./friendship')(sequelize)
+models.UserGroup = require('./user-group')(sequelize)
 models.User = require('./user')(sequelize)
+models.Student = require('./student')(sequelize)
+models.Employee = require('./employee')(sequelize)
 models.Group = require('./group')(sequelize)
 models.Post = require('./post')(sequelize)
 models.Comment = require('./comment')(sequelize)
 models.Media = require('./media')(sequelize)
+models.Course = require('./course')(sequelize)
 
 Object.keys(models).forEach(modelName => {
   if (models[modelName].associate) {
