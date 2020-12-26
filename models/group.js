@@ -17,16 +17,13 @@ module.exports = sequelize => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      logo: {
+      image: {
         type: DataTypes.STRING,
-      },
-      cover: {
-        type: DataTypes.STRING,
+        allowNull: false,
       },
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        onDelete: 'NO ACTION',
       },
     },
     {
@@ -35,7 +32,7 @@ module.exports = sequelize => {
     }
   )
 
-  Group.associate = ({ User, Post }) => {
+  Group.associate = ({ User, UserGroup, Post }) => {
     Group.belongsTo(User, {
       as: 'owner',
       foreignKey: 'userId',
@@ -44,8 +41,7 @@ module.exports = sequelize => {
     Group.belongsToMany(User, {
       as: 'Members',
       foreignKey: 'groupId',
-      through: 'group_membership',
-      onDelete: 'NO ACTION',
+      through: UserGroup,
     })
 
     Group.hasMany(Post, {
