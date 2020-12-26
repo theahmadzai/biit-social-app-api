@@ -2,15 +2,15 @@ const faker = require('faker')
 
 module.exports = {
   up: async queryInterface => {
-    const group_membership = await queryInterface.sequelize
-      .query(`SELECT userId, groupId FROM group_membership`)
+    const userGroup = await queryInterface.sequelize
+      .query(`SELECT userId, groupId FROM user_group`)
       .then(res => res[0])
 
     await queryInterface.bulkInsert(
       'posts',
       [...Array(200)].map(() => {
-        const { userId, groupId } = group_membership[
-          Math.floor(Math.random() * group_membership.length)
+        const { userId, groupId } = userGroup[
+          Math.floor(Math.random() * userGroup.length)
         ]
 
         return {
