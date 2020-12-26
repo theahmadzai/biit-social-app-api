@@ -45,12 +45,14 @@ module.exports = gql`
     createdAt: String!
     updatedAt: String!
     firstName: String
-    lastName: String
     middleName: String
+    lastName: String
+    fatherName: String
     sex: String
     birthDate: String
     currentAddress: String
     currentCity: String
+    phone: String
     session: String
     admissionDate: String
     semester: String
@@ -113,24 +115,23 @@ module.exports = gql`
     title: String!
   }
 
-  type Group {
-    id: ID!
-    name: String!
-    description: String!
-    logo: String!
-    cover: String!
-    owner: User!
-    members: [User]!
-    posts: [Post]
-    createdAt: String!
-    updatedAt: String!
-  }
-
   type File {
     id: ID!
     filename: String!
     mimetype: String!
     encoding: String!
+  }
+
+  type Group {
+    id: ID!
+    name: String!
+    description: String!
+    image: String!
+    owner: User!
+    members: [User]!
+    posts: [Post]
+    createdAt: String!
+    updatedAt: String!
   }
 
   type Post {
@@ -186,6 +187,12 @@ module.exports = gql`
     whoami: User! @authenticated
   }
 
+  input GroupInput {
+    name: String!
+    description: String!
+    image: Upload!
+  }
+
   input PostInput {
     text: String
     media: [Upload!]
@@ -199,9 +206,10 @@ module.exports = gql`
 
   type Mutation {
     login(input: AuthInput!): AuthPayload!
-    pushNotification(title: String!): Notification!
+    createGroup(input: GroupInput!): Group! @authenticated
     createPost(input: PostInput!): Post! @authenticated
     createComment(input: CommentInput!): Comment! @authenticated
+    pushNotification(title: String!): Notification!
   }
 
   type Subscription {
