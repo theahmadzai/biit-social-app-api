@@ -32,7 +32,15 @@ exports.AuthorizedDirective = class extends SchemaDirectiveVisitor {
     const { role } = this.args
 
     field.resolve = async (root, args, context, info) => {
-      if (context.user.role !== role) {
+      const user = await context.db.models.User.findOne({
+        where: { id: context.user.id },
+      })
+
+      if (!user) {
+        throw new AuthenticationError(`This user doesn't exist.`)
+      }
+
+      if (user.role !== role) {
         throw new AuthenticationError(
           `Not authorized for role: ${role} resources.`
         )
