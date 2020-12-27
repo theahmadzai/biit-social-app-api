@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 
-module.exports = sequelize =>
-  sequelize.define(
+module.exports = sequelize => {
+  const Student = sequelize.define(
     'Student',
     {
       regNo: {
@@ -75,3 +75,13 @@ module.exports = sequelize =>
       timestamps: false,
     }
   )
+
+  Student.associate = ({ User }) => {
+    Student.belongsTo(User, {
+      foreignKey: 'regNo',
+      targetKey: 'username',
+    })
+  }
+
+  return Student
+}
