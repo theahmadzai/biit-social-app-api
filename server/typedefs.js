@@ -33,9 +33,13 @@ module.exports = gql`
     updatedAt: String!
   }
 
-  union Profile = StudentProfile | TeacherProfile
+  interface Profile {
+    firstName: String
+    middleName: String
+    lastName: String
+  }
 
-  type StudentProfile {
+  type StudentProfile implements Profile {
     firstName: String
     middleName: String
     lastName: String
@@ -53,10 +57,10 @@ module.exports = gql`
     section: String
   }
 
-  type TeacherProfile {
+  type TeacherProfile implements Profile {
     firstName: String
-    lastName: String
     middleName: String
+    lastName: String
     designation: String
     currentAddress: String
     currentCity: String
@@ -67,10 +71,10 @@ module.exports = gql`
     status: String
   }
 
-  type AdminProfile {
+  type AdminProfile implements Profile {
     firstName: String
-    lastName: String
     middleName: String
+    lastName: String
     designation: String
     currentAddress: String
     currentCity: String
