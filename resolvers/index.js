@@ -1,30 +1,31 @@
 const { GraphQLUpload } = require('graphql-upload')
 const { User, Group, Media } = require('../models').models
 
-const UserResolvers = {
-  groups: async user => await user.getGroups(),
-  groupsOwned: async user => await user.getGroupsOwned(),
-  posts: async user => await user.getPosts(),
-  comments: async user => await user.getComments(),
-}
-
 const resolvers = {
   Upload: GraphQLUpload,
 
   User: {
+    groups: async user => await user.getGroups(),
+    groupsOwned: async user => await user.getGroupsOwned(),
+    posts: async user => await user.getPosts(),
+    comments: async user => await user.getComments(),
+    profile: async user => await user.getStudentProfile(),
+  },
+
+  Profile: {
     __resolveType: ({ role }) => {
-      if (role === 'STUDENT') return 'Student'
-      if (role === 'TEACHER') return 'Teacher'
-      if (role === 'ADMIN') return 'Admin'
-      return 'Student'
+      if (role === 'STUDENT') return 'StudentProfile'
+      if (role === 'TEACHER') return 'TeacherProfile'
+      if (role === 'ADMIN') return 'AdminProfile'
+      return 'StudentProfile'
     },
   },
 
-  Student: { ...UserResolvers },
+  StudentProfile: {},
 
-  Teacher: { ...UserResolvers },
+  TeacherProfile: {},
 
-  Admin: { ...UserResolvers },
+  AdminProfile: {},
 
   Group: {
     owner: async group => await group.getOwner(),
@@ -55,22 +56,6 @@ const resolvers = {
     },
     courses: async (_, __, { db }) => {
       return await db.models.Course.findAll()
-    },
-    teacher: async (_, { empNo }, { db }) => {
-      return await db.models.Employee.findOne({
-        where: { empNo },
-      })
-    },
-    teachers: async (_, __, { db }) => {
-      return await db.models.Employee.findAll()
-    },
-    student: async (_, { regNo }, { db }) => {
-      return await db.models.Student.findOne({
-        where: { regNo },
-      })
-    },
-    students: async (_, __, { db }) => {
-      return await db.models.Student.findAll()
     },
     user: async (_, { id }, { db }) => {
       return await db.models.User.findOne({
@@ -156,9 +141,10 @@ const resolvers = {
 
   Mutation: {
     login: require('./mutations/login'),
-    pushNotification: require('./mutations/push-notification'),
+    createGroup: require('./mutations/create-group'),
     createPost: require('./mutations/create-post'),
     createComment: require('./mutations/create-comment'),
+    pushNotification: require('./mutations/push-notification'),
   },
 
   Subscription: {
