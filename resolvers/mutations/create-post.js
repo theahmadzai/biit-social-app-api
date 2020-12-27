@@ -1,59 +1,32 @@
-const fs = require('fs')
-const uniqid = require('uniqid')
-const mime = require('mime-types')
 const { UserInputError } = require('apollo-server-express')
+const { storeFile } = require('../../utils/storage')
 
 module.exports = async (_, { input }, { db, user }) => {
   const { text, media, groupId } = input
 
-  const postObject = { groupId, userId: user.id }
-
-  if (!media || !media.length) {
-    if (!text || !text.trim().length) {
-      throw new UserInputError('No post inputs are filled.')
-    }
-    postObject.text = text
+  if ((!media || !media.length) && (!text || !text.trim().length)) {
+    throw new UserInputError('No post inputs are filled.')
   }
 
-  const post = await db.models.Post.create(postObject)
+  const Post = await db.models.Post.create({
+    text: !text || !text.trim().length ? null : text,
+    groupId,
+    userId: user.id,
+  })
 
-  if (!media) return post
-
-  const files = await Promise.all(media)
+  if (!media) return Post
 
   await Promise.all(
-    files.map(({ mimetype, encoding, createReadStream }) => {
-      const readStream = createReadStream()
-      const filename = `${uniqid()}.${mime.extension(mimetype)}`
-      const path = `uploads/${filename}`
-
-      return new Promise((resolve, reject) => {
-        const writeStream = fs.createWriteStream(path)
-
-        writeStream.on('finish', async () => {
-          await db.models.Media.create({
-            filename,
-            mimetype,
-            encoding,
-            postId: post.id,
-          })
-          resolve()
-        })
-
-        writeStream.on('error', error => {
-          fs.unlink(path, () => {
-            reject(error)
-          })
-        })
-
-        readStream.on('error', error => {
-          writeStream.destroy(error)
-        })
-
-        readStream.pipe(writeStream)
+    media.map(async file => {
+      const { filename, mimetype, encoding } = await storeFile(file)
+      await db.models.Media.create({
+        filename,
+        mimetype,
+        encoding,
+        postId: Post.id,
       })
     })
   )
 
-  return post
+  return Post
 }
