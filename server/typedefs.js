@@ -157,28 +157,34 @@ module.exports = gql`
     whoami: User! @authenticated
   }
 
-  input GroupInput {
+  input CreateGroupInput {
     name: String!
     description: String!
     image: Upload!
   }
 
-  input PostInput {
+  input AddGroupMemberInput {
+    username: String!
+    groupId: ID!
+  }
+
+  input CreatePostInput {
     text: String
     media: [Upload!]
     groupId: ID!
   }
 
-  input CommentInput {
+  input CreateCommentInput {
     content: String!
     postId: ID!
   }
 
   type Mutation {
     login(input: AuthInput!): AuthPayload!
-    createGroup(input: GroupInput!): Group! @authenticated
-    createPost(input: PostInput!): Post! @authenticated
-    createComment(input: CommentInput!): Comment! @authenticated
+    createGroup(input: CreateGroupInput!): Group! @authenticated
+    addGroupMember(input: AddGroupMemberInput!): User! @authenticated
+    createPost(input: CreatePostInput!): Post! @authenticated
+    createComment(input: CreateCommentInput!): Comment! @authenticated
     pushNotification(title: String!): Notification!
   }
 
