@@ -18,7 +18,7 @@ module.exports = gql`
     description: String!
   }
 
-  interface User {
+  type User {
     id: ID!
     username: String!
     password: String!
@@ -28,22 +28,14 @@ module.exports = gql`
     groupsOwned: [Group]!
     posts: [Post]!
     comments: [Comment]!
+    profile: Profile!
     createdAt: String!
     updatedAt: String!
   }
 
-  type Student implements User {
-    id: ID!
-    username: String!
-    password: String!
-    role: Role!
-    image: String
-    groups: [Group]!
-    groupsOwned: [Group]!
-    posts: [Post]!
-    comments: [Comment]!
-    createdAt: String!
-    updatedAt: String!
+  union Profile = StudentProfile | TeacherProfile
+
+  type StudentProfile {
     firstName: String
     middleName: String
     lastName: String
@@ -61,18 +53,7 @@ module.exports = gql`
     section: String
   }
 
-  type Teacher implements User {
-    id: ID!
-    username: String!
-    password: String!
-    role: Role!
-    image: String
-    groups: [Group]!
-    groupsOwned: [Group]!
-    posts: [Post]!
-    comments: [Comment]!
-    createdAt: String!
-    updatedAt: String!
+  type TeacherProfile {
     firstName: String
     lastName: String
     middleName: String
@@ -86,18 +67,7 @@ module.exports = gql`
     status: String
   }
 
-  type Admin implements User {
-    id: ID!
-    username: String!
-    password: String!
-    role: Role!
-    image: String
-    groups: [Group]!
-    groupsOwned: [Group]!
-    posts: [Post]!
-    comments: [Comment]!
-    createdAt: String!
-    updatedAt: String!
+  type AdminProfile {
     firstName: String
     lastName: String
     middleName: String
@@ -167,10 +137,6 @@ module.exports = gql`
   type Query {
     course(code: ID!): Course
     courses: [Course]
-    teacher(empNo: ID!): Teacher
-    teachers: [Teacher]!
-    student(regNo: ID!): Student
-    students: [Student]!
     users: [User]!
     user(id: ID!): User
     groups: [Group]!
