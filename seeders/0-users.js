@@ -17,6 +17,24 @@ module.exports = {
       })),
       {}
     )
+
+    const empNumbers = await queryInterface.sequelize
+      .query(`SELECT empNo FROM teachers;`)
+      .then(res => res[0].map(({ empNo }) => empNo))
+
+    await queryInterface.bulkInsert(
+      'users',
+      empNumbers.map(empNo => ({
+        username: empNo,
+        password:
+          '$2b$10$OGsUmtSzxGfTzK0yAS8bh.ZQ0rqnCua.cyvVZG6iBI2T96I2Fg20m',
+        role: 'TEACHER',
+        image: `fake/profile${Math.floor(Math.random() * 3)}.jpg`,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })),
+      {}
+    )
   },
 
   down: async queryInterface => {
