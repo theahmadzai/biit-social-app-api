@@ -1,5 +1,7 @@
 const { GraphQLUpload } = require('graphql-upload')
-const { User, Group, Media } = require('../models').models
+const { Op } = require('sequelize')
+const { User, Group, Media, Student, Teacher } = require('../models').models
+const { searchUsersOperators } = require('../utils/db')
 
 const resolvers = {
   Upload: GraphQLUpload,
@@ -9,14 +11,18 @@ const resolvers = {
     groupsOwned: async user => await user.getGroupsOwned(),
     posts: async user => await user.getPosts(),
     comments: async user => await user.getComments(),
-    profile: async user => await user.getStudentProfile(),
+    profile: async user => {
+      if (user.role === 'STUDENT') return await user.getStudentProfile()
+      if (user.role === 'TEACHER') return await user.getTeacherProfile()
+      return { firstName: null, middleName: null, lastName: null }
+    },
   },
 
   Profile: {
-    __resolveType: ({ role }) => {
-      if (role === 'STUDENT') return 'StudentProfile'
-      if (role === 'TEACHER') return 'TeacherProfile'
-      if (role === 'ADMIN') return 'AdminProfile'
+    __resolveType: user => {
+      if ('regNo' in user) return 'StudentProfile'
+      if ('empNo' in user) return 'TeacherProfile'
+      if ('adEmpNo' in user) return 'AdminProfile'
       return 'StudentProfile'
     },
   },
@@ -135,6 +141,18 @@ const resolvers = {
         include: {
           model: User,
         },
+      })
+    },
+    searchUsers: async (_, { input: { query } }, { db }) => {
+      const parts = query.split(' ').filter(part => part.length)
+
+      return await db.models.User.findAll({
+        where: { [Op.or]: searchUsersOperators(parts) },
+        order: [['id', 'DESC']],
+        include: [
+          { model: Student, as: 'StudentProfile' },
+          { model: Teacher, as: 'TeacherProfile' },
+        ],
       })
     },
   },
