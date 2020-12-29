@@ -40,10 +40,10 @@ module.exports = sequelize => {
     Post,
     Comment,
   }) => {
-    User.hasOne(Student, {
+    User.belongsTo(Student, {
       as: 'StudentProfile',
-      foreignKey: 'regNo',
-      sourceKey: 'username',
+      foreignKey: 'username',
+      sourceKey: 'regNo',
     })
 
     User.belongsToMany(User, {
