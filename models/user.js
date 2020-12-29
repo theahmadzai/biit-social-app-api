@@ -34,6 +34,7 @@ module.exports = sequelize => {
 
   User.associate = ({
     Student,
+    Teacher,
     Friendship,
     Group,
     UserGroup,
@@ -44,6 +45,14 @@ module.exports = sequelize => {
       as: 'StudentProfile',
       foreignKey: 'username',
       sourceKey: 'regNo',
+      constraints: false,
+    })
+
+    User.belongsTo(Teacher, {
+      as: 'TeacherProfile',
+      foreignKey: 'username',
+      sourceKey: 'empNo',
+      constraints: false,
     })
 
     User.belongsToMany(User, {

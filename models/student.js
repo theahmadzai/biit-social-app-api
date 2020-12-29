@@ -58,6 +58,10 @@ module.exports = sequelize => {
     Student.hasOne(User, {
       foreignKey: 'username',
       targetKey: 'regNo',
+      constraints: false,
+      scope: {
+        role: 'STUDENT',
+      },
     })
   }
 
