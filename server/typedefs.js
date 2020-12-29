@@ -12,6 +12,32 @@ module.exports = gql`
   directive @authenticated on FIELD_DEFINITION
   directive @authorized(role: Role! = ADMIN) on FIELD_DEFINITION
 
+  input SearchUsersInput {
+    query: String!
+  }
+
+  input CreateGroupInput {
+    name: String!
+    description: String!
+    image: Upload!
+  }
+
+  input AddGroupMemberInput {
+    username: String!
+    groupId: ID!
+  }
+
+  input CreatePostInput {
+    text: String
+    media: [Upload!]
+    groupId: ID!
+  }
+
+  input CreateCommentInput {
+    content: String!
+    postId: ID!
+  }
+
   type Course {
     code: ID!
     title: String!
@@ -43,16 +69,14 @@ module.exports = gql`
     firstName: String
     middleName: String
     lastName: String
-    fatherName: String
     sex: String
     birthDate: String
-    currentAddress: String
-    currentCity: String
+    permanentAddress: String
+    permanentCity: String
     phone: String
     session: String
     admissionDate: String
     semester: String
-    remarks: String
     status: String
     section: String
   }
@@ -147,36 +171,15 @@ module.exports = gql`
     group(id: ID!): Group
     posts: [Post]!
     post(id: ID!): Post
-    getUserGroupsOwned(id: ID!): [Group]
-    getUserGroups(id: ID!): [Group]
-    getUserPosts(id: ID!): [Post]
-    getUserComments(id: ID!): [Comment]
-    getGroupPosts(id: ID!): [Post]
-    getGroupMembers(id: ID!): [User]
-    getPostComments(id: ID!): [Comment]
+    getUserGroupsOwned(id: ID!): [Group]!
+    getUserGroups(id: ID!): [Group]!
+    getUserPosts(id: ID!): [Post]!
+    getUserComments(id: ID!): [Comment]!
+    getGroupPosts(id: ID!): [Post]!
+    getGroupMembers(id: ID!): [User]!
+    getPostComments(id: ID!): [Comment]!
+    searchUsers(input: SearchUsersInput!): [User]!
     whoami: User! @authenticated
-  }
-
-  input CreateGroupInput {
-    name: String!
-    description: String!
-    image: Upload!
-  }
-
-  input AddGroupMemberInput {
-    username: String!
-    groupId: ID!
-  }
-
-  input CreatePostInput {
-    text: String
-    media: [Upload!]
-    groupId: ID!
-  }
-
-  input CreateCommentInput {
-    content: String!
-    postId: ID!
   }
 
   type Mutation {
