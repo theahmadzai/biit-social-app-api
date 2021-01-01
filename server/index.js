@@ -51,10 +51,7 @@ const server = new ApolloServer({
 
     const user = await getUserFromToken(req.headers.authorization)
 
-    return {
-      ...context,
-      user,
-    }
+    return { ...context, user }
   },
 })
 
