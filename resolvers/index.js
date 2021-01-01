@@ -161,6 +161,7 @@ const resolvers = {
     login: require('./mutations/login'),
     createGroup: require('./mutations/create-group'),
     addGroupMember: require('./mutations/add-group-member'),
+    removeGroupMember: require('./mutations/remove-group-member'),
     createPost: require('./mutations/create-post'),
     createComment: require('./mutations/create-comment'),
     pushNotification: require('./mutations/push-notification'),

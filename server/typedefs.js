@@ -27,6 +27,11 @@ module.exports = gql`
     groupId: ID!
   }
 
+  input RemoveGroupMemberInput {
+    username: String!
+    groupId: ID!
+  }
+
   input CreatePostInput {
     text: String
     media: [Upload!]
@@ -186,6 +191,7 @@ module.exports = gql`
     login(input: AuthInput!): AuthPayload!
     createGroup(input: CreateGroupInput!): Group! @authenticated
     addGroupMember(input: AddGroupMemberInput!): User! @authenticated
+    removeGroupMember(input: RemoveGroupMemberInput!): User! @authenticated
     createPost(input: CreatePostInput!): Post! @authenticated
     createComment(input: CreateCommentInput!): Comment! @authenticated
     pushNotification(title: String!): Notification!

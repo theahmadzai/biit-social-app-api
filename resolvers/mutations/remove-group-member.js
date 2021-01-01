@@ -19,15 +19,19 @@ module.exports = async (_, { input }, { user, db }) => {
     )
   }
 
+  if (candidate.id === owner.id) {
+    throw new UserInputError(`You cannot remove the owner of the group.`)
+  }
+
   const members = await group[0].getMembers({ where: { id: candidate.id } })
 
-  if (members.length) {
+  if (!members.length) {
     throw new UserInputError(
-      `User: '${username}' already exists in group: '${group[0].name}'`
+      `User: '${username}' does not exists in group: '${group[0].name}'`
     )
   }
 
-  group[0].addMember(candidate)
+  group[0].removeMember(candidate)
 
   return candidate
 }
