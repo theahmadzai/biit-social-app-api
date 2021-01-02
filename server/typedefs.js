@@ -12,6 +12,16 @@ module.exports = gql`
   directive @authenticated on FIELD_DEFINITION
   directive @authorized(role: Role! = ADMIN) on FIELD_DEFINITION
 
+  input AuthInput {
+    username: String!
+    password: String!
+  }
+
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
   input SearchUsersInput {
     query: String!
   }
@@ -114,10 +124,6 @@ module.exports = gql`
     status: String
   }
 
-  type Notification {
-    title: String!
-  }
-
   type File {
     id: ID!
     filename: String!
@@ -157,14 +163,8 @@ module.exports = gql`
     updatedAt: String!
   }
 
-  type AuthPayload {
-    token: String!
-    user: User!
-  }
-
-  input AuthInput {
-    username: String!
-    password: String!
+  type Notification {
+    title: String!
   }
 
   type Query {
