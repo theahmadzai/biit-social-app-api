@@ -92,12 +92,12 @@ const resolvers = {
         where: { id: user.id },
       })
     },
-    getUserGroupsOwned: async (_, { id }, { db }) => {
+    userGroupsOwned: async (_, { id }, { db }) => {
       return await db.models.Group.findAll({
         where: { userId: id },
       })
     },
-    getUserGroups: async (_, { id }, { db }) => {
+    userGroups: async (_, { id }, { db }) => {
       return (
         await db.models.User.findOne({
           where: { id },
@@ -107,24 +107,24 @@ const resolvers = {
         })
       ).Groups
     },
-    getUserPosts: async (_, { id }, { db }) => {
+    userPosts: async (_, { id }, { db }) => {
       return await db.models.Post.findAll({
         where: { userId: id },
       })
     },
-    getUserComments: async (_, { id }, { db }) => {
+    userComments: async (_, { id }, { db }) => {
       return await db.models.Comment.findAll({
         where: { userId: id },
       })
     },
-    getGroupPosts: async (_, { id }, { db }) => {
+    groupPosts: async (_, { id }, { db }) => {
       return await db.models.Post.findAll({
         where: { groupId: id },
         order: [['id', 'DESC']],
         include: [Media, User],
       })
     },
-    getGroupMembers: async (_, { id }, { db }) => {
+    groupMembers: async (_, { id }, { db }) => {
       return (
         await db.models.Group.findOne({
           where: { id },
@@ -135,7 +135,7 @@ const resolvers = {
         })
       ).Members
     },
-    getPostComments: async (_, { id }, { db }) => {
+    postComments: async (_, { id }, { db }) => {
       return await db.models.Comment.findAll({
         where: { postId: id },
         include: {
@@ -162,8 +162,8 @@ const resolvers = {
     createGroup: require('./mutations/create-group'),
     addGroupMember: require('./mutations/add-group-member'),
     removeGroupMember: require('./mutations/remove-group-member'),
-    createPost: require('./mutations/create-post'),
-    createComment: require('./mutations/create-comment'),
+    createGroupPost: require('./mutations/create-group-post'),
+    createPostComment: require('./mutations/create-post-comment'),
     pushNotification: require('./mutations/push-notification'),
   },
 
