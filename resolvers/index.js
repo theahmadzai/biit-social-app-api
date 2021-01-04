@@ -40,11 +40,11 @@ const resolvers = {
   },
 
   Post: {
+    media: async post => ('Media' in post ? post.Media : await post.getMedia()),
     user: async post => ('User' in post ? post.User : await post.getUser()),
     group: async post => ('Group' in post ? post.Group : await post.getGroup()),
     comments: async post =>
       'Comments' in post ? post.Comments : await post.getComments(),
-    media: async post => ('Media' in post ? post.Media : await post.getMedia()),
   },
 
   Comment: {
