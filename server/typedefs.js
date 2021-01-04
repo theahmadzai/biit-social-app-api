@@ -146,9 +146,9 @@ module.exports = gql`
   type Post {
     id: ID!
     text: String
+    media: [File]
     user: User!
     group: Group!
-    media: [File]
     comments: [Comment]
     createdAt: String!
     updatedAt: String!
@@ -176,13 +176,13 @@ module.exports = gql`
     group(id: ID!): Group
     posts: [Post]!
     post(id: ID!): Post
-    getUserGroupsOwned(id: ID!): [Group]!
-    getUserGroups(id: ID!): [Group]!
-    getUserPosts(id: ID!): [Post]!
-    getUserComments(id: ID!): [Comment]!
-    getGroupPosts(id: ID!): [Post]!
-    getGroupMembers(id: ID!): [User]!
-    getPostComments(id: ID!): [Comment]!
+    userGroupsOwned(id: ID!): [Group]!
+    userGroups(id: ID!): [Group]!
+    userPosts(id: ID!): [Post]!
+    userComments(id: ID!): [Comment]!
+    groupPosts(id: ID!): [Post]!
+    groupMembers(id: ID!): [User]!
+    postComments(id: ID!): [Comment]!
     searchUsers(input: SearchUsersInput!): [User]!
     whoami: User! @authenticated
   }
@@ -192,8 +192,8 @@ module.exports = gql`
     createGroup(input: CreateGroupInput!): Group! @authenticated
     addGroupMember(input: AddGroupMemberInput!): User! @authenticated
     removeGroupMember(input: RemoveGroupMemberInput!): User! @authenticated
-    createPost(input: CreatePostInput!): Post! @authenticated
-    createComment(input: CreateCommentInput!): Comment! @authenticated
+    createGroupPost(input: CreatePostInput!): Post! @authenticated
+    createPostComment(input: CreateCommentInput!): Comment! @authenticated
     pushNotification(title: String!): Notification!
   }
 
