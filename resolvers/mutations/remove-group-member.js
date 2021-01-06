@@ -1,37 +1,29 @@
 const { UserInputError } = require('apollo-server-express')
 
 module.exports = async (_, { input }, { user, db }) => {
-  const { username, groupId } = input
+  const { userId, groupId } = input
 
   const owner = await db.models.User.findOne({ where: { id: user.id } })
 
-  const group = await owner.getGroupsOwned({ where: { id: groupId } })
+  const [group] = await owner.getGroupsOwned({ where: { id: groupId } })
 
-  if (!group.length) {
+  if (!group) {
     throw new UserInputError(`Invalid group or no admin rights.`)
   }
 
-  const candidate = await db.models.User.findOne({ where: { username } })
+  const [member] = await group.getMembers({ where: { id: userId } })
 
-  if (!candidate) {
+  if (!member) {
     throw new UserInputError(
-      `User with username: '${username}' does not exist.`
+      `This user is not member of group: '${group.name}'`
     )
   }
 
-  if (candidate.id === owner.id) {
-    throw new UserInputError(`You cannot remove the owner of the group.`)
+  if (userId == owner.id) {
+    throw new UserInputError(`Group owner cannot be removed.`)
   }
 
-  const members = await group[0].getMembers({ where: { id: candidate.id } })
+  group.removeMember(member)
 
-  if (!members.length) {
-    throw new UserInputError(
-      `User: '${username}' does not exists in group: '${group[0].name}'`
-    )
-  }
-
-  group[0].removeMember(candidate)
-
-  return candidate
+  return member
 }

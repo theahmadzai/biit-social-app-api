@@ -1,33 +1,31 @@
 const { UserInputError } = require('apollo-server-express')
 
 module.exports = async (_, { input }, { user, db }) => {
-  const { username, groupId } = input
+  const { userId, groupId } = input
 
   const owner = await db.models.User.findOne({ where: { id: user.id } })
 
-  const group = await owner.getGroupsOwned({ where: { id: groupId } })
+  const [group] = await owner.getGroupsOwned({ where: { id: groupId } })
 
-  if (!group.length) {
+  if (!group) {
     throw new UserInputError(`Invalid group or no admin rights.`)
   }
 
-  const candidate = await db.models.User.findOne({ where: { username } })
+  const [member] = await group.getMembers({ where: { id: userId } })
+
+  if (member) {
+    throw new UserInputError(
+      `This user is already member of group: '${group.name}'`
+    )
+  }
+
+  const candidate = await db.models.User.findOne({ where: { id: userId } })
 
   if (!candidate) {
-    throw new UserInputError(
-      `User with username: '${username}' does not exist.`
-    )
+    throw new UserInputError(`Invalid user input.`)
   }
 
-  const members = await group[0].getMembers({ where: { id: candidate.id } })
-
-  if (members.length) {
-    throw new UserInputError(
-      `User: '${username}' already exists in group: '${group[0].name}'`
-    )
-  }
-
-  group[0].addMember(candidate)
+  group.addMember(candidate)
 
   return candidate
 }

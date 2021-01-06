@@ -26,29 +26,24 @@ module.exports = gql`
     query: String!
   }
 
-  input CreateGroupInput {
+  input GroupInput {
     name: String!
     description: String!
     image: Upload!
   }
 
-  input AddGroupMemberInput {
-    username: String!
+  input GroupMemberInput {
+    userId: ID!
     groupId: ID!
   }
 
-  input RemoveGroupMemberInput {
-    username: String!
-    groupId: ID!
-  }
-
-  input CreatePostInput {
+  input PostInput {
     text: String
     media: [Upload!]
     groupId: ID!
   }
 
-  input CreateCommentInput {
+  input CommentInput {
     content: String!
     postId: ID!
   }
@@ -189,11 +184,11 @@ module.exports = gql`
 
   type Mutation {
     login(input: AuthInput!): AuthPayload!
-    createGroup(input: CreateGroupInput!): Group! @authenticated
-    addGroupMember(input: AddGroupMemberInput!): User! @authenticated
-    removeGroupMember(input: RemoveGroupMemberInput!): User! @authenticated
-    createGroupPost(input: CreatePostInput!): Post! @authenticated
-    createPostComment(input: CreateCommentInput!): Comment! @authenticated
+    createGroup(input: GroupInput!): Group! @authenticated
+    addGroupMember(input: GroupMemberInput!): User! @authenticated
+    removeGroupMember(input: GroupMemberInput!): User! @authenticated
+    createGroupPost(input: PostInput!): Post! @authenticated
+    createPostComment(input: CommentInput!): Comment! @authenticated
     pushNotification(title: String!): Notification!
   }
 
