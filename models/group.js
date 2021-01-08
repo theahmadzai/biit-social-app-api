@@ -21,32 +21,23 @@ module.exports = sequelize => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
     },
     {
-      tableName: 'groups',
       timestamps: true,
     }
   )
 
-  Group.associate = ({ User, UserGroup, Post }) => {
+  Group.associate = ({ User, GroupMembership, Post }) => {
     Group.belongsTo(User, {
-      as: 'owner',
-      foreignKey: 'userId',
+      as: 'Owner',
+      foreignKey: 'UserId',
     })
 
     Group.belongsToMany(User, {
-      as: 'Members',
-      foreignKey: 'groupId',
-      through: UserGroup,
+      through: GroupMembership,
     })
 
-    Group.hasMany(Post, {
-      foreignKey: 'groupId',
-    })
+    Group.hasMany(Post)
   }
 
   return Group

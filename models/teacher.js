@@ -43,7 +43,6 @@ module.exports = sequelize => {
       },
     },
     {
-      tableName: 'teachers',
       timestamps: false,
     }
   )

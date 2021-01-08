@@ -17,7 +17,7 @@ const sequelize = new Sequelize(database, username, password, {
 const models = {}
 
 models.Friendship = require('./friendship')(sequelize)
-models.UserGroup = require('./user-group')(sequelize)
+models.GroupMembership = require('./group-membership')(sequelize)
 models.User = require('./user')(sequelize)
 models.Student = require('./student')(sequelize)
 models.Teacher = require('./teacher')(sequelize)
@@ -26,6 +26,7 @@ models.Post = require('./post')(sequelize)
 models.Comment = require('./comment')(sequelize)
 models.Media = require('./media')(sequelize)
 models.Course = require('./course')(sequelize)
+models.Wall = require('./wall')(sequelize)
 
 Object.keys(models).forEach(modelName => {
   if (models[modelName].associate) {

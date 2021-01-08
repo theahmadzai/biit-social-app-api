@@ -49,7 +49,6 @@ module.exports = sequelize => {
       },
     },
     {
-      tableName: 'students',
       timestamps: false,
     }
   )

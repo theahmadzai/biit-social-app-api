@@ -21,21 +21,14 @@ module.exports = sequelize => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      postId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
     },
     {
-      tableName: 'media',
       timestamps: true,
     }
   )
 
   Media.associate = ({ Post }) => {
-    Media.belongsTo(Post, {
-      foreignKey: 'postId',
-    })
+    Media.belongsTo(Post)
   }
 
   return Media

@@ -27,7 +27,6 @@ module.exports = sequelize => {
       },
     },
     {
-      tableName: 'users',
       timestamps: true,
     }
   )
@@ -37,7 +36,7 @@ module.exports = sequelize => {
     Teacher,
     Friendship,
     Group,
-    UserGroup,
+    GroupMembership,
     Post,
     Comment,
   }) => {
@@ -68,23 +67,16 @@ module.exports = sequelize => {
     })
 
     User.hasMany(Group, {
-      as: 'groupsOwned',
-      foreignKey: 'userId',
-      onDelete: 'NO ACTION',
+      as: 'GroupsOwned',
     })
 
     User.belongsToMany(Group, {
-      foreignKey: 'userId',
-      through: UserGroup,
+      through: GroupMembership,
     })
 
-    User.hasMany(Post, {
-      foreignKey: 'userId',
-    })
+    User.hasMany(Post)
 
-    User.hasMany(Comment, {
-      foreignKey: 'userId',
-    })
+    User.hasMany(Comment)
   }
 
   return User

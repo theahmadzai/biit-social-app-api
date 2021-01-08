@@ -1,29 +1,26 @@
 const { DataTypes } = require('sequelize')
 
 module.exports = sequelize => {
-  const Comment = sequelize.define(
-    'Comment',
+  const Wall = sequelize.define(
+    'Wall',
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      content: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
+      // tableName: 'walls',
       timestamps: true,
     }
   )
 
-  Comment.associate = ({ User, Post }) => {
-    Comment.belongsTo(User)
+  Wall.associate = () => {}
 
-    Comment.belongsTo(Post)
-  }
-
-  return Comment
+  return Wall
 }

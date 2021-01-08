@@ -10,7 +10,6 @@ module.exports = sequelize => {
       },
     },
     {
-      tableName: 'friendship',
       timestamps: true,
     }
   )

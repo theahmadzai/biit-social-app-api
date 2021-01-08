@@ -19,7 +19,7 @@ module.exports = sequelize =>
       },
     },
     {
-      tableName: 'course',
+      // tableName: 'course',
       timestamps: false,
     }
   )
