@@ -2,25 +2,23 @@ const faker = require('faker')
 
 module.exports = {
   up: async queryInterface => {
-    const userIds = await queryInterface.sequelize
-      .query(`SELECT id FROM users;`)
-      .then(res => res[0].map(({ id }) => id))
+    const userIds = ['2017-ARID-0264', '2017-ARID-0262']
 
     await queryInterface.bulkInsert(
-      'groups',
-      [...Array(40)].map(() => ({
+      'Groups',
+      [...Array(10)].map(() => ({
         name: faker.name.firstName(),
         description: faker.lorem.sentence(),
         image: `fake/image${Math.floor(Math.random() * 3)}.jpg`,
-        userId: userIds[Math.floor(Math.random() * userIds.length)],
         createdAt: new Date(),
         updatedAt: new Date(),
+        UserId: userIds[Math.floor(Math.random() * userIds.length)],
       })),
       {}
     )
   },
 
   down: async queryInterface => {
-    await queryInterface.bulkDelete('groups', null, {})
+    await queryInterface.bulkDelete('Groups', null, {})
   },
 }

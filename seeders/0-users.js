@@ -1,7 +1,7 @@
 module.exports = {
   up: async queryInterface => {
     const regNumbers = await queryInterface.sequelize
-      .query(`SELECT regNo FROM students;`)
+      .query(`SELECT regNo FROM Students;`)
       .then(res => res[0].map(({ regNo }) => regNo))
 
     await queryInterface.bulkInsert(
@@ -19,11 +19,11 @@ module.exports = {
     )
 
     const empNumbers = await queryInterface.sequelize
-      .query(`SELECT empNo FROM teachers;`)
+      .query(`SELECT empNo FROM Teachers;`)
       .then(res => res[0].map(({ empNo }) => empNo))
 
     await queryInterface.bulkInsert(
-      'users',
+      'Users',
       empNumbers.map(empNo => ({
         username: empNo,
         password:
@@ -38,6 +38,6 @@ module.exports = {
   },
 
   down: async queryInterface => {
-    await queryInterface.bulkDelete('users', null, {})
+    await queryInterface.bulkDelete('Users', null, {})
   },
 }

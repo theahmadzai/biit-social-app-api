@@ -5,20 +5,20 @@ module.exports = {
       .then(res => res[0].map(({ id }) => id))
 
     await queryInterface.bulkInsert(
-      'media',
+      'Media',
       [...Array(40)].map(() => ({
         filename: `fake/image${Math.floor(Math.random() * 3)}.jpg`,
         mimetype: 'image/jpg',
         encoding: 'base64',
-        postId: postIds[Math.floor(Math.random() * postIds.length)],
         createdAt: new Date(),
         updatedAt: new Date(),
+        PostId: postIds[Math.floor(Math.random() * postIds.length)],
       })),
       {}
     )
   },
 
   down: async queryInterface => {
-    await queryInterface.bulkDelete('media', null, {})
+    await queryInterface.bulkDelete('Media', null, {})
   },
 }
