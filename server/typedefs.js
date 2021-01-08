@@ -32,7 +32,7 @@ module.exports = gql`
     image: Upload!
   }
 
-  input GroupMemberInput {
+  input GroupUserInput {
     userId: ID!
     groupId: ID!
   }
@@ -119,7 +119,7 @@ module.exports = gql`
     status: String
   }
 
-  type File {
+  type Media {
     id: ID!
     filename: String!
     mimetype: String!
@@ -132,7 +132,7 @@ module.exports = gql`
     description: String!
     image: String!
     owner: User!
-    members: [User]!
+    users: [User]!
     posts: [Post]
     createdAt: String!
     updatedAt: String!
@@ -141,7 +141,7 @@ module.exports = gql`
   type Post {
     id: ID!
     text: String
-    media: [File]
+    media: [Media]
     user: User!
     group: Group!
     comments: [Comment]
@@ -163,20 +163,24 @@ module.exports = gql`
   }
 
   type Query {
+    allCourses: [Course]!
     course(code: ID!): Course
-    courses: [Course]
-    users: [User]!
+    allUsers: [User]!
     user(id: ID!): User
-    groups: [Group]!
+    allGroups: [Group]!
     group(id: ID!): Group
-    posts: [Post]!
+    allPosts: [Post]!
     post(id: ID!): Post
+    allComments: [Comment]!
+    comment(id: ID!): Comment
+    allMedia: [Media]
+    media(id: ID!): Media
     userGroupsOwned(id: ID!): [Group]!
     userGroups(id: ID!): [Group]!
     userPosts(id: ID!): [Post]!
     userComments(id: ID!): [Comment]!
     groupPosts(id: ID!): [Post]!
-    groupMembers(id: ID!): [User]!
+    groupUsers(id: ID!): [User]!
     postComments(id: ID!): [Comment]!
     searchUsers(input: SearchUsersInput!): [User]!
     whoami: User! @authenticated
@@ -186,8 +190,8 @@ module.exports = gql`
     login(input: AuthInput!): AuthPayload!
     createGroup(input: GroupInput!): Group! @authenticated
     deleteGroup(id: ID!): Group! @authenticated
-    addGroupMember(input: GroupMemberInput!): User! @authenticated
-    removeGroupMember(input: GroupMemberInput!): User! @authenticated
+    addGroupUser(input: GroupUserInput!): User! @authenticated
+    removeGroupUser(input: GroupUserInput!): User! @authenticated
     createGroupPost(input: PostInput!): Post! @authenticated
     createPostComment(input: CommentInput!): Comment! @authenticated
     pushNotification(title: String!): Notification!

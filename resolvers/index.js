@@ -35,7 +35,7 @@ const resolvers = {
 
   Group: {
     owner: async group => await group.getOwner(),
-    members: async group => await group.getMembers(),
+    users: async group => await group.getUsers(),
     posts: async group => await group.getPosts(),
   },
 
@@ -55,23 +55,23 @@ const resolvers = {
   },
 
   Query: {
-    course: async (_, { code }, { db }) => {
+    allCourses: async (_, { code }, { db }) => {
       return await db.models.Course.findOne({
         where: { code },
       })
     },
-    courses: async (_, __, { db }) => {
+    course: async (_, __, { db }) => {
       return await db.models.Course.findAll()
     },
-    user: async (_, { id }, { db }) => {
+    allUsers: async (_, { id }, { db }) => {
       return await db.models.User.findOne({
         where: { id },
       })
     },
-    users: async (_, __, { db }) => {
+    user: async (_, __, { db }) => {
       return await db.models.User.findAll()
     },
-    groups: async (_, __, { db }) => {
+    allGroups: async (_, __, { db }) => {
       return await db.models.Group.findAll()
     },
     group: async (_, { id }, { db }) => {
@@ -79,11 +79,27 @@ const resolvers = {
         where: { id },
       })
     },
-    posts: async (_, __, { db }) => {
+    allPosts: async (_, __, { db }) => {
       return await db.models.Post.findAll()
     },
     post: async (_, { id }, { db }) => {
       return await db.models.Post.findOne({
+        where: { id },
+      })
+    },
+    allComments: async (_, __, { db }) => {
+      return await db.models.Comment.findAll()
+    },
+    comment: async (_, { id }, { db }) => {
+      return await db.models.Comment.findOne({
+        where: { id },
+      })
+    },
+    allMedia: async (_, __, { db }) => {
+      return await db.models.Media.findAll()
+    },
+    media: async (_, { id }, { db }) => {
+      return await db.models.Media.findOne({
         where: { id },
       })
     },
@@ -124,16 +140,15 @@ const resolvers = {
         include: [Media, User],
       })
     },
-    groupMembers: async (_, { id }, { db }) => {
+    groupUsers: async (_, { id }, { db }) => {
       return (
         await db.models.Group.findOne({
           where: { id },
           include: {
             model: User,
-            as: 'Members',
           },
         })
-      ).Members
+      ).Users
     },
     postComments: async (_, { id }, { db }) => {
       return await db.models.Comment.findAll({
@@ -159,11 +174,12 @@ const resolvers = {
 
   Mutation: {
     login: require('./mutations/login'),
-    createGroup: require('./mutations/create-group'),
-    addGroupMember: require('./mutations/add-group-member'),
-    removeGroupMember: require('./mutations/remove-group-member'),
-    createGroupPost: require('./mutations/create-group-post'),
-    createPostComment: require('./mutations/create-post-comment'),
+    createGroup: require('./mutations/group-create'),
+    deleteGroup: require('./mutations/group-delete'),
+    addGroupUser: require('./mutations/group-user-add'),
+    removeGroupUser: require('./mutations/group-user-remove'),
+    createGroupPost: require('./mutations/post-create'),
+    createPostComment: require('./mutations/comment-create'),
     pushNotification: require('./mutations/push-notification'),
   },
 
