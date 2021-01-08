@@ -36,7 +36,7 @@ module.exports = sequelize => {
     Teacher,
     Friendship,
     Group,
-    GroupMembership,
+    GroupUser,
     Post,
     Comment,
   }) => {
@@ -71,7 +71,7 @@ module.exports = sequelize => {
     })
 
     User.belongsToMany(Group, {
-      through: GroupMembership,
+      through: GroupUser,
     })
 
     User.hasMany(Post)

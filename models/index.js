@@ -17,7 +17,7 @@ const sequelize = new Sequelize(database, username, password, {
 const models = {}
 
 models.Friendship = require('./friendship')(sequelize)
-models.GroupMembership = require('./group-membership')(sequelize)
+models.GroupUser = require('./group-user')(sequelize)
 models.User = require('./user')(sequelize)
 models.Student = require('./student')(sequelize)
 models.Teacher = require('./teacher')(sequelize)

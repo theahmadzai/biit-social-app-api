@@ -27,14 +27,14 @@ module.exports = sequelize => {
     }
   )
 
-  Group.associate = ({ User, GroupMembership, Post }) => {
+  Group.associate = ({ User, GroupUser, Post }) => {
     Group.belongsTo(User, {
       as: 'Owner',
       foreignKey: 'UserId',
     })
 
     Group.belongsToMany(User, {
-      through: GroupMembership,
+      through: GroupUser,
     })
 
     Group.hasMany(Post)
