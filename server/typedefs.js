@@ -185,6 +185,7 @@ module.exports = gql`
   type Mutation {
     login(input: AuthInput!): AuthPayload!
     createGroup(input: GroupInput!): Group! @authenticated
+    deleteGroup(id: ID!): Group! @authenticated
     addGroupMember(input: GroupMemberInput!): User! @authenticated
     removeGroupMember(input: GroupMemberInput!): User! @authenticated
     createGroupPost(input: PostInput!): Post! @authenticated
