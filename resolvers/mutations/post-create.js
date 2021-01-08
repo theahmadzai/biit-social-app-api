@@ -10,8 +10,8 @@ module.exports = async (_, { input }, { db, user }) => {
 
   const Post = await db.models.Post.create({
     text: !text || !text.trim().length ? null : text,
-    groupId,
-    userId: user.id,
+    GroupId: groupId,
+    UserId: user.id,
   })
 
   if (!media) return Post
@@ -23,7 +23,7 @@ module.exports = async (_, { input }, { db, user }) => {
         filename,
         mimetype,
         encoding,
-        postId: Post.id,
+        PostId: Post.id,
       })
     })
   )

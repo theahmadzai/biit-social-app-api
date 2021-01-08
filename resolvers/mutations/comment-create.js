@@ -8,7 +8,7 @@ module.exports = async (_, { input }, { db, user }) => {
   const { content, postId } = input
 
   if (!content.trim().length) {
-    throw new UserInputError('Empty comment.')
+    throw new UserInputError('No comment text provided.')
   }
 
   const notification = {
@@ -19,7 +19,7 @@ module.exports = async (_, { input }, { db, user }) => {
 
   return await db.models.Comment.create({
     content,
-    postId,
-    userId: user.id,
+    PostId: postId,
+    UserId: user.id,
   })
 }
