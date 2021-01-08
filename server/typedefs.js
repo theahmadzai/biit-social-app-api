@@ -63,6 +63,7 @@ module.exports = gql`
     groups: [Group]!
     groupsOwned: [Group]!
     posts: [Post]!
+    likes: [Like]!
     comments: [Comment]!
     profile: Profile!
     createdAt: String!
@@ -144,7 +145,16 @@ module.exports = gql`
     media: [Media]
     user: User!
     group: Group!
+    likes: [Like]!
     comments: [Comment]
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  type Like {
+    id: ID!
+    user: User!
+    post: Post!
     createdAt: String!
     updatedAt: String!
   }
@@ -178,9 +188,11 @@ module.exports = gql`
     userGroupsOwned(id: ID!): [Group]!
     userGroups(id: ID!): [Group]!
     userPosts(id: ID!): [Post]!
+    userLikes(id: ID!): [Like]!
     userComments(id: ID!): [Comment]!
     groupPosts(id: ID!): [Post]!
     groupUsers(id: ID!): [User]!
+    postLikes(id: ID!): [Like]!
     postComments(id: ID!): [Comment]!
     searchUsers(input: SearchUsersInput!): [User]!
     whoami: User! @authenticated

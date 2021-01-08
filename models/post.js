@@ -18,12 +18,14 @@ module.exports = sequelize => {
     }
   )
 
-  Post.associate = ({ User, Group, Media, Comment }) => {
+  Post.associate = ({ User, Group, Media, Like, Comment }) => {
     Post.belongsTo(User)
 
     Post.belongsTo(Group)
 
     Post.hasMany(Media)
+
+    Post.hasMany(Like)
 
     Post.hasMany(Comment)
   }

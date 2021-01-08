@@ -1,6 +1,14 @@
 const { GraphQLUpload } = require('graphql-upload')
 const { Op } = require('sequelize')
-const { User, Group, Media, Student, Teacher } = require('../models').models
+const {
+  User,
+  Group,
+  Media,
+  Like,
+  Comment,
+  Student,
+  Teacher,
+} = require('../models').models
 const { searchUsersOperators } = require('../utils/db')
 
 const resolvers = {
@@ -10,6 +18,7 @@ const resolvers = {
     groups: async user => await user.getGroups(),
     groupsOwned: async user => await user.getGroupsOwned(),
     posts: async user => await user.getPosts(),
+    likes: async user => await user.getLikes(),
     comments: async user => await user.getComments(),
     profile: async user => {
       if (user.role === 'STUDENT') return await user.getStudentProfile()
@@ -43,8 +52,14 @@ const resolvers = {
     media: async post => ('Media' in post ? post.Media : await post.getMedia()),
     user: async post => ('User' in post ? post.User : await post.getUser()),
     group: async post => ('Group' in post ? post.Group : await post.getGroup()),
+    likes: async post => ('Likes' in post ? post.Likes : await post.getLikes()),
     comments: async post =>
       'Comments' in post ? post.Comments : await post.getComments(),
+  },
+
+  Like: {
+    user: async like => ('User' in like ? like.User : await like.getUser()),
+    post: async like => ('Post' in like ? like.Post : await like.getPost()),
   },
 
   Comment: {
@@ -117,14 +132,17 @@ const resolvers = {
       return (
         await db.models.User.findOne({
           where: { id },
-          include: {
-            model: Group,
-          },
+          include: [Group],
         })
       ).Groups
     },
     userPosts: async (_, { id }, { db }) => {
       return await db.models.Post.findAll({
+        where: { userId: id },
+      })
+    },
+    userLikes: async (_, { id }, { db }) => {
+      return await db.models.Like.findAll({
         where: { userId: id },
       })
     },
@@ -137,7 +155,7 @@ const resolvers = {
       return await db.models.Post.findAll({
         where: { groupId: id },
         order: [['id', 'DESC']],
-        include: [Media, User],
+        include: [Media, User, Like, Comment],
       })
     },
     groupUsers: async (_, { id }, { db }) => {
@@ -149,6 +167,14 @@ const resolvers = {
           },
         })
       ).Users
+    },
+    postLikes: async (_, { id }, { db }) => {
+      return await db.models.Like.findAll({
+        where: { postId: id },
+        include: {
+          model: User,
+        },
+      })
     },
     postComments: async (_, { id }, { db }) => {
       return await db.models.Comment.findAll({

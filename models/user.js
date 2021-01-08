@@ -38,6 +38,7 @@ module.exports = sequelize => {
     Group,
     GroupUser,
     Post,
+    Like,
     Comment,
   }) => {
     User.belongsTo(Student, {
@@ -75,6 +76,8 @@ module.exports = sequelize => {
     })
 
     User.hasMany(Post)
+
+    User.hasMany(Like)
 
     User.hasMany(Comment)
   }
