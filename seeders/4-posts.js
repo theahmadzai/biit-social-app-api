@@ -3,7 +3,7 @@ const faker = require('faker')
 module.exports = {
   up: async queryInterface => {
     const userGroup = await queryInterface.sequelize
-      .query(`SELECT UserId, GroupId FROM GroupMemberships`)
+      .query(`SELECT UserId, GroupId FROM GroupUsers`)
       .then(res => res[0])
 
     await queryInterface.bulkInsert(
