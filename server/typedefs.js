@@ -149,6 +149,8 @@ module.exports = gql`
     comments: [Comment]
     createdAt: String!
     updatedAt: String!
+    likesCount: Int!
+    commentsCount: Int!
   }
 
   type Like {
@@ -194,6 +196,7 @@ module.exports = gql`
     groupUsers(id: ID!): [User]!
     postLikes(id: ID!): [Like]!
     postComments(id: ID!): [Comment]!
+    isPostLikedByUser(id: ID!): Boolean! @authenticated
     searchUsers(input: SearchUsersInput!): [User]!
     whoami: User! @authenticated
   }
@@ -206,6 +209,7 @@ module.exports = gql`
     removeGroupUser(input: GroupUserInput!): User! @authenticated
     createGroupPost(input: PostInput!): Post! @authenticated
     createPostComment(input: CommentInput!): Comment! @authenticated
+    togglePostLike(id: ID!): [Like]! @authenticated
     pushNotification(title: String!): Notification!
   }
 
