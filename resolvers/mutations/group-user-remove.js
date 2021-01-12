@@ -1,6 +1,6 @@
 const { UserInputError } = require('apollo-server-express')
 
-module.exports = async (_, { input }, { user, db }) => {
+module.exports = async (_, { input }, { user }) => {
   const { userId, groupId } = input
 
   const [group] = await user.getGroupsOwned({ where: { id: groupId } })
