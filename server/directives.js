@@ -21,6 +21,8 @@ exports.AuthenticatedDirective = class extends SchemaDirectiveVisitor {
         throw new AuthenticationError(`This user doesn't exist.`)
       }
 
+      context.user = user
+
       return resolver(root, args, context, info)
     }
   }
