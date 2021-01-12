@@ -1,7 +1,7 @@
 const { UserInputError } = require('apollo-server-express')
 const { storeFile } = require('../../utils/storage')
 
-module.exports = async (_, { input }, { db, user: { id } }) => {
+module.exports = async (_, { input }, { db, user }) => {
   const { name, description, image } = input
 
   if (!name.trim().length || !description.trim().length || !image) {
@@ -11,8 +11,6 @@ module.exports = async (_, { input }, { db, user: { id } }) => {
   }
 
   const { filename } = await storeFile(image)
-
-  const user = await db.models.User.findOne({ where: { id } })
 
   const group = await db.models.Group.create({
     name: name.trim(),

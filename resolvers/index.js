@@ -55,6 +55,12 @@ const resolvers = {
     likes: async post => ('Likes' in post ? post.Likes : await post.getLikes()),
     comments: async post =>
       'Comments' in post ? post.Comments : await post.getComments(),
+    likesCount: async post =>
+      'Likes' in post ? post.Likes.length : await post.getLikes().length,
+    commentsCount: async post =>
+      'Comments' in post
+        ? post.Comments.length
+        : await post.getComments().length,
   },
 
   Like: {
@@ -125,7 +131,7 @@ const resolvers = {
     },
     userGroupsOwned: async (_, { id }, { db }) => {
       return await db.models.Group.findAll({
-        where: { userId: id },
+        where: { UserId: id },
       })
     },
     userGroups: async (_, { id }, { db }) => {
@@ -138,22 +144,22 @@ const resolvers = {
     },
     userPosts: async (_, { id }, { db }) => {
       return await db.models.Post.findAll({
-        where: { userId: id },
+        where: { UserId: id },
       })
     },
     userLikes: async (_, { id }, { db }) => {
       return await db.models.Like.findAll({
-        where: { userId: id },
+        where: { UserId: id },
       })
     },
     userComments: async (_, { id }, { db }) => {
       return await db.models.Comment.findAll({
-        where: { userId: id },
+        where: { UserId: id },
       })
     },
     groupPosts: async (_, { id }, { db }) => {
       return await db.models.Post.findAll({
-        where: { groupId: id },
+        where: { GroupId: id },
         order: [['id', 'DESC']],
         include: [Media, User, Like, Comment],
       })
@@ -170,7 +176,7 @@ const resolvers = {
     },
     postLikes: async (_, { id }, { db }) => {
       return await db.models.Like.findAll({
-        where: { postId: id },
+        where: { PostId: id },
         include: {
           model: User,
         },
@@ -178,11 +184,16 @@ const resolvers = {
     },
     postComments: async (_, { id }, { db }) => {
       return await db.models.Comment.findAll({
-        where: { postId: id },
+        where: { PostId: id },
         include: {
           model: User,
         },
       })
+    },
+    isPostLikedByUser: async (_, { id }, { user }) => {
+      return (await user.getLikes({ where: { PostId: id } })).length
+        ? true
+        : false
     },
     searchUsers: async (_, { input: { query } }, { db }) => {
       const parts = query.split(' ').filter(part => part.length)
@@ -206,6 +217,7 @@ const resolvers = {
     removeGroupUser: require('./mutations/group-user-remove'),
     createGroupPost: require('./mutations/post-create'),
     createPostComment: require('./mutations/comment-create'),
+    togglePostLike: require('./mutations/post-like-toggle'),
     pushNotification: require('./mutations/push-notification'),
   },
 
