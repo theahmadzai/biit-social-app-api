@@ -56,11 +56,11 @@ const resolvers = {
     comments: async post =>
       'Comments' in post ? post.Comments : await post.getComments(),
     likesCount: async post =>
-      'Likes' in post ? post.Likes.length : await post.getLikes().length,
+      'Likes' in post ? post.Likes.length : (await post.getLikes()).length,
     commentsCount: async post =>
       'Comments' in post
         ? post.Comments.length
-        : await post.getComments().length,
+        : (await post.getComments()).length,
   },
 
   Like: {
@@ -76,21 +76,21 @@ const resolvers = {
   },
 
   Query: {
-    allCourses: async (_, { code }, { db }) => {
+    allCourses: async (_, __, { db }) => {
+      return await db.models.Course.findAll()
+    },
+    course: async (_, { code }, { db }) => {
       return await db.models.Course.findOne({
         where: { code },
       })
     },
-    course: async (_, __, { db }) => {
-      return await db.models.Course.findAll()
+    allUsers: async (_, __, { db }) => {
+      return await db.models.User.findAll()
     },
-    allUsers: async (_, { id }, { db }) => {
+    user: async (_, { id }, { db }) => {
       return await db.models.User.findOne({
         where: { id },
       })
-    },
-    user: async (_, __, { db }) => {
-      return await db.models.User.findAll()
     },
     allGroups: async (_, __, { db }) => {
       return await db.models.Group.findAll()
