@@ -101,13 +101,13 @@ module.exports = gql`
     firstName: String
     middleName: String
     lastName: String
-    designation: String
     permanentAddress: String
     permanentCity: String
-    phone: String
-    email: String
     joiningDate: String
     resignDate: String
+    phone: String
+    email: String
+    designation: String
     status: String
   }
 
@@ -115,13 +115,13 @@ module.exports = gql`
     firstName: String
     middleName: String
     lastName: String
-    designation: String
     permanentAddress: String
     permanentCity: String
-    phone: String
-    email: String
     joiningDate: String
     resignDate: String
+    phone: String
+    email: String
+    designation: String
     status: String
   }
 

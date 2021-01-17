@@ -17,19 +17,10 @@ module.exports = sequelize => {
       lastName: {
         type: DataTypes.STRING,
       },
-      designation: {
-        type: DataTypes.STRING,
-      },
       permanentAddress: {
         type: DataTypes.STRING,
       },
       permanentCity: {
-        type: DataTypes.STRING,
-      },
-      phone: {
-        type: DataTypes.STRING,
-      },
-      email: {
         type: DataTypes.STRING,
       },
       joiningDate: {
@@ -37,6 +28,15 @@ module.exports = sequelize => {
       },
       resignDate: {
         type: DataTypes.DATE,
+      },
+      phone: {
+        type: DataTypes.STRING,
+      },
+      email: {
+        type: DataTypes.STRING,
+      },
+      designation: {
+        type: DataTypes.STRING,
       },
       status: {
         type: DataTypes.STRING,
