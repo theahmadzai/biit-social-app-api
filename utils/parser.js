@@ -3,12 +3,8 @@ exports.parseDatesheet = datesheet => {
 
   const [, titleRow, timeRow, , headerRow, ...rows] = datesheet
 
-  const title = titleRow
-    .filter(cell => cell !== null && cell.length > 0)
-    .join(' ')
-  const time = timeRow
-    .filter(cell => cell !== null && cell.length > 0)
-    .join(' ')
+  const title = titleRow.filter(cell => cell !== null && cell.length > 0).join(' ')
+  const time = timeRow.filter(cell => cell !== null && cell.length > 0).join(' ')
 
   const [, , ...groups] = headerRow
 
@@ -56,7 +52,7 @@ exports.parseTimetable = timetable => {
       groups.forEach((group, i) => {
         if (!group || !events[i]) return
 
-        timetable.push({
+        data.push({
           day,
           time,
           class: group,
