@@ -93,8 +93,8 @@ module.exports = gql`
     session: String
     admissionDate: String
     semester: String
-    status: String
     section: String
+    program: String
   }
 
   type TeacherProfile implements Profile {

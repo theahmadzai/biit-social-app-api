@@ -41,10 +41,10 @@ module.exports = sequelize => {
       semester: {
         type: DataTypes.STRING,
       },
-      status: {
+      section: {
         type: DataTypes.STRING,
       },
-      section: {
+      program: {
         type: DataTypes.STRING,
       },
     },
