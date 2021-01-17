@@ -1,8 +1,5 @@
 const { defaultTypeResolver } = require('graphql')
-const {
-  SchemaDirectiveVisitor,
-  AuthenticationError,
-} = require('apollo-server-express')
+const { SchemaDirectiveVisitor, AuthenticationError } = require('apollo-server-express')
 
 exports.AuthenticatedDirective = class extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
@@ -34,6 +31,10 @@ exports.AuthorizedDirective = class extends SchemaDirectiveVisitor {
     const { role } = this.args
 
     field.resolve = async (root, args, context, info) => {
+      if (!context.user) {
+        throw new AuthenticationError('Not authenticated.')
+      }
+
       const user = await context.db.models.User.findOne({
         where: { id: context.user.id },
       })
@@ -43,9 +44,7 @@ exports.AuthorizedDirective = class extends SchemaDirectiveVisitor {
       }
 
       if (user.role !== role) {
-        throw new AuthenticationError(
-          `Not authorized for role: ${role} resources.`
-        )
+        throw new AuthenticationError(`Not authorized for role: ${role} resources.`)
       }
 
       return resolver(root, args, context, info)
