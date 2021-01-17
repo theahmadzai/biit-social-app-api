@@ -43,6 +43,11 @@ module.exports = gql`
     groupId: ID!
   }
 
+  input IntelligentPostInput {
+    type: String!
+    file: Upload!
+  }
+
   input CommentInput {
     content: String!
     postId: ID!
@@ -210,6 +215,7 @@ module.exports = gql`
     createGroupPost(input: PostInput!): Post! @authenticated
     createPostComment(input: CommentInput!): Comment! @authenticated
     togglePostLike(id: ID!): [Like]! @authenticated
+    intelligentPost(input: IntelligentPostInput!): String! @authorized(role: TEACHER)
     pushNotification(title: String!): Notification!
   }
 
