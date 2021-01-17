@@ -102,8 +102,8 @@ module.exports = gql`
     middleName: String
     lastName: String
     designation: String
-    currentAddress: String
-    currentCity: String
+    permanentAddress: String
+    permanentCity: String
     phone: String
     email: String
     joiningDate: String
@@ -116,8 +116,8 @@ module.exports = gql`
     middleName: String
     lastName: String
     designation: String
-    currentAddress: String
-    currentCity: String
+    permanentAddress: String
+    permanentCity: String
     phone: String
     email: String
     joiningDate: String
