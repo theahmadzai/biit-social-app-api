@@ -27,7 +27,8 @@ models.Like = require('./like')(sequelize)
 models.Comment = require('./comment')(sequelize)
 models.Media = require('./media')(sequelize)
 models.Course = require('./course')(sequelize)
-models.Wall = require('./wall')(sequelize)
+models.Timetable = require('./timetable')(sequelize)
+models.Datesheet = require('./datesheet')(sequelize)
 
 Object.keys(models).forEach(modelName => {
   if (models[modelName].associate) {
