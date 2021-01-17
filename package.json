@@ -34,6 +34,7 @@
     "mime-types": "^2.1.27",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
+    "read-excel-file": "^5.0.0",
     "sequelize": "^6.3.5",
     "tedious": "^9.2.1",
     "uniqid": "^5.2.0"
