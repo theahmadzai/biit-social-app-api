@@ -218,6 +218,7 @@ const resolvers = {
     createGroupPost: require('./mutations/post-create'),
     createPostComment: require('./mutations/comment-create'),
     togglePostLike: require('./mutations/post-like-toggle'),
+    intelligentPost: require('./mutations/intelligent-post'),
     pushNotification: require('./mutations/push-notification'),
   },
 
