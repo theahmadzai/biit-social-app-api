@@ -18,7 +18,7 @@ services:
     networks:
       - appnet
     ports:
-      - '3000:3000'
+      - 3000:3000
     volumes:
       - type: bind
         source: ./
@@ -32,12 +32,18 @@ services:
       - .env
 
   db:
-    image: mongo:${MONGO_IMAGE_VERSION}
+    image: postgres:${POSTGRES_IMAGE_VERSION}
     networks:
       appnet:
         aliases:
           - database
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     volumes:
       - type: volume
         source: database
-        target: /data/db
+        target: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
