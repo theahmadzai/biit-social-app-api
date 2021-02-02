@@ -5,11 +5,11 @@ const sequelize = new Sequelize(db.url)
 
 const models = {}
 
-models.GroupUser = require('./group-user')(sequelize)
-models.User = require('./user')(sequelize)
 models.Student = require('./student')(sequelize)
 models.Employee = require('./employee')(sequelize)
+models.User = require('./user')(sequelize)
 models.Group = require('./group')(sequelize)
+models.GroupUser = require('./group-user')(sequelize)
 models.Post = require('./post')(sequelize)
 models.Like = require('./like')(sequelize)
 models.Comment = require('./comment')(sequelize)
