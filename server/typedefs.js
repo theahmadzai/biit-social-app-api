@@ -165,6 +165,25 @@ module.exports = gql`
     title: String!
   }
 
+  type Datesheet {
+    id: ID!
+    title: String
+    time: String
+    day: String
+    date: String
+    class: String
+    course: String
+  }
+
+  type Timetable {
+    id: ID!
+    day: String
+    time: String
+    class: String
+    course: String
+    teacher: String
+  }
+
   type Query {
     allCourses: [Course]!
     course(code: ID!): Course
@@ -189,6 +208,8 @@ module.exports = gql`
     postComments(id: ID!): [Comment]!
     isPostLikedByUser(id: ID!): Boolean! @authenticated
     searchUsers(input: SearchUsersInput!): [User]!
+    studentDatesheet: [Datesheet]! @authorized(role: STUDENT)
+    studentTimetable: [Timetable]! @authorized(role: STUDENT)
     whoami: User! @authenticated
   }
 
@@ -201,7 +222,7 @@ module.exports = gql`
     createGroupPost(input: PostInput!): Post! @authenticated
     createPostComment(input: CommentInput!): Comment! @authenticated
     togglePostLike(id: ID!): [Like]! @authenticated
-    intelligentPost(input: IntelligentPostInput!): String! @authorized(role: TEACHER)
+    intelligentPost(input: IntelligentPostInput!): String! @authorized(role: ADMIN)
     pushNotification(title: String!): Notification!
   }
 

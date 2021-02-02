@@ -112,11 +112,6 @@ const resolvers = {
         where: { id },
       })
     },
-    whoami: async (_, __, { db, user }) => {
-      return await db.models.User.findOne({
-        where: { id: user.id },
-      })
-    },
     userGroupsOwned: async (_, { id }, { db }) => {
       return await db.models.Group.findAll({
         where: { UserId: id },
@@ -192,6 +187,17 @@ const resolvers = {
           { model: Employee, as: 'EmployeeProfile' },
         ],
       })
+    },
+    whoami: async (_, __, { db, user }) => {
+      return await db.models.User.findOne({
+        where: { id: user.id },
+      })
+    },
+    studentDatesheet: async (_, __, { db }) => {
+      return await db.models.Datesheet.findAll({})
+    },
+    studentTimetable: async (_, __, { db }) => {
+      return await db.models.Timetable.findAll({})
     },
   },
 
