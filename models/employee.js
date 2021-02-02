@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize')
 
 module.exports = sequelize => {
-  const Teacher = sequelize.define(
-    'Teacher',
+  const Employee = sequelize.define(
+    'Employee',
     {
       empNo: {
         type: DataTypes.STRING,
@@ -47,16 +47,16 @@ module.exports = sequelize => {
     }
   )
 
-  Teacher.associate = ({ User }) => {
-    Teacher.hasOne(User, {
+  Employee.associate = ({ User }) => {
+    Employee.hasOne(User, {
       foreignKey: 'username',
       targetKey: 'empNo',
       constraints: false,
       scope: {
-        role: 'TEACHER',
+        role: 'EMPLOYEE',
       },
     })
   }
 
-  return Teacher
+  return Employee
 }
