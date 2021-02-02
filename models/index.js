@@ -1,18 +1,7 @@
 const { Sequelize } = require('sequelize')
 const { db } = require('../config')
 
-const { dialect, host, port, username, password, database } = db
-
-const sequelize = new Sequelize(database, username, password, {
-  host,
-  port,
-  dialect,
-  dialectOptions: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
-})
+const sequelize = new Sequelize(db.url)
 
 const models = {}
 

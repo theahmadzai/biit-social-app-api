@@ -6,7 +6,6 @@ module.exports = sequelize =>
     {
       code: {
         type: DataTypes.STRING,
-        field: 'course_no',
         primaryKey: true,
       },
       title: {
@@ -15,11 +14,9 @@ module.exports = sequelize =>
       },
       description: {
         type: DataTypes.STRING,
-        field: 'course_desc',
       },
     },
     {
-      // tableName: 'course',
       timestamps: false,
     }
   )
