@@ -19,13 +19,13 @@ exports.searchUsersOperators = parts => {
       {
         [Op.and]: [
           {
-            '$TeacherProfile.firstName$': { [Op.like]: `%${parts[0]}%` },
+            '$EmployeeProfile.firstName$': { [Op.like]: `%${parts[0]}%` },
           },
           {
-            '$TeacherProfile.middleName$': { [Op.like]: `%${parts[1]}%` },
+            '$EmployeeProfile.middleName$': { [Op.like]: `%${parts[1]}%` },
           },
           {
-            '$TeacherProfile.lastName$': { [Op.like]: `%${parts[2]}%` },
+            '$EmployeeProfile.lastName$': { [Op.like]: `%${parts[2]}%` },
           },
         ],
       },
@@ -70,33 +70,33 @@ exports.searchUsersOperators = parts => {
       {
         [Op.and]: [
           {
-            '$TeacherProfile.firstName$': { [Op.like]: `%${parts[0]}%` },
+            '$EmployeeProfile.firstName$': { [Op.like]: `%${parts[0]}%` },
           },
           {
-            '$TeacherProfile.middleName$': { [Op.like]: `%${parts[1]}%` },
-          },
-        ],
-      },
-      {
-        [Op.and]: [
-          {
-            '$TeacherProfile.middleName$': { [Op.like]: `%${parts[0]}%` },
-          },
-          {
-            '$TeacherProfile.lastName$': { [Op.like]: `%${parts[1]}%` },
+            '$EmployeeProfile.middleName$': { [Op.like]: `%${parts[1]}%` },
           },
         ],
       },
       {
         [Op.and]: [
           {
-            '$TeacherProfile.firstName$': { [Op.like]: `%${parts[0]}%` },
+            '$EmployeeProfile.middleName$': { [Op.like]: `%${parts[0]}%` },
           },
           {
-            '$TeacherProfile.middleName$': { [Op.like]: `` },
+            '$EmployeeProfile.lastName$': { [Op.like]: `%${parts[1]}%` },
+          },
+        ],
+      },
+      {
+        [Op.and]: [
+          {
+            '$EmployeeProfile.firstName$': { [Op.like]: `%${parts[0]}%` },
           },
           {
-            '$TeacherProfile.lastName$': { [Op.like]: `%${parts[1]}%` },
+            '$EmployeeProfile.middleName$': { [Op.like]: `` },
+          },
+          {
+            '$EmployeeProfile.lastName$': { [Op.like]: `%${parts[1]}%` },
           },
         ],
       },

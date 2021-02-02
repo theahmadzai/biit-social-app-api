@@ -1,14 +1,6 @@
 const { GraphQLUpload } = require('graphql-upload')
 const { Op } = require('sequelize')
-const {
-  User,
-  Group,
-  Media,
-  Like,
-  Comment,
-  Student,
-  Teacher,
-} = require('../models').models
+const { User, Group, Media, Like, Comment, Student, Employee } = require('../models').models
 const { searchUsersOperators } = require('../utils/db')
 
 const resolvers = {
@@ -21,26 +13,29 @@ const resolvers = {
     likes: async user => await user.getLikes(),
     comments: async user => await user.getComments(),
     profile: async user => {
-      if (user.role === 'STUDENT') return await user.getStudentProfile()
-      if (user.role === 'TEACHER') return await user.getTeacherProfile()
-      return { firstName: null, middleName: null, lastName: null }
+      switch (user.role) {
+        case 'STUDENT':
+          return await user.getStudentProfile()
+        case 'TEACHER':
+        case 'ADMIN':
+          return await user.getEmployeeProfile()
+        default:
+          return { firstName: null, middleName: null, lastName: null }
+      }
     },
   },
 
   Profile: {
     __resolveType: user => {
       if ('regNo' in user) return 'StudentProfile'
-      if ('empNo' in user) return 'TeacherProfile'
-      if ('adEmpNo' in user) return 'AdminProfile'
-      return 'StudentProfile'
+      if ('empNo' in user) return 'EmployeeProfile'
+      return null
     },
   },
 
   StudentProfile: {},
 
-  TeacherProfile: {},
-
-  AdminProfile: {},
+  EmployeeProfile: {},
 
   Group: {
     owner: async group => await group.getOwner(),
@@ -53,14 +48,9 @@ const resolvers = {
     user: async post => ('User' in post ? post.User : await post.getUser()),
     group: async post => ('Group' in post ? post.Group : await post.getGroup()),
     likes: async post => ('Likes' in post ? post.Likes : await post.getLikes()),
-    comments: async post =>
-      'Comments' in post ? post.Comments : await post.getComments(),
-    likesCount: async post =>
-      'Likes' in post ? post.Likes.length : (await post.getLikes()).length,
-    commentsCount: async post =>
-      'Comments' in post
-        ? post.Comments.length
-        : (await post.getComments()).length,
+    comments: async post => ('Comments' in post ? post.Comments : await post.getComments()),
+    likesCount: async post => ('Likes' in post ? post.Likes.length : (await post.getLikes()).length),
+    commentsCount: async post => ('Comments' in post ? post.Comments.length : (await post.getComments()).length),
   },
 
   Like: {
@@ -69,10 +59,8 @@ const resolvers = {
   },
 
   Comment: {
-    user: async comment =>
-      'User' in comment ? comment.User : await comment.getUser(),
-    post: async comment =>
-      'Post' in comment ? comment.Post : await comment.getPost(),
+    user: async comment => ('User' in comment ? comment.User : await comment.getUser()),
+    post: async comment => ('Post' in comment ? comment.Post : await comment.getPost()),
   },
 
   Query: {
@@ -191,9 +179,7 @@ const resolvers = {
       })
     },
     isPostLikedByUser: async (_, { id }, { user }) => {
-      return (await user.getLikes({ where: { PostId: id } })).length
-        ? true
-        : false
+      return (await user.getLikes({ where: { PostId: id } })).length ? true : false
     },
     searchUsers: async (_, { input: { query } }, { db }) => {
       const parts = query.split(' ').filter(part => part.length)
@@ -203,7 +189,7 @@ const resolvers = {
         order: [['id', 'DESC']],
         include: [
           { model: Student, as: 'StudentProfile' },
-          { model: Teacher, as: 'TeacherProfile' },
+          { model: Employee, as: 'EmployeeProfile' },
         ],
       })
     },

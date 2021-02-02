@@ -97,21 +97,7 @@ module.exports = gql`
     program: String
   }
 
-  type TeacherProfile implements Profile {
-    firstName: String
-    middleName: String
-    lastName: String
-    permanentAddress: String
-    permanentCity: String
-    joiningDate: String
-    resignDate: String
-    phone: String
-    email: String
-    designation: String
-    status: String
-  }
-
-  type AdminProfile implements Profile {
+  type EmployeeProfile implements Profile {
     firstName: String
     middleName: String
     lastName: String

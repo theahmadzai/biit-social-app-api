@@ -16,11 +16,10 @@ const sequelize = new Sequelize(database, username, password, {
 
 const models = {}
 
-models.Friendship = require('./friendship')(sequelize)
 models.GroupUser = require('./group-user')(sequelize)
 models.User = require('./user')(sequelize)
 models.Student = require('./student')(sequelize)
-models.Teacher = require('./teacher')(sequelize)
+models.Employee = require('./employee')(sequelize)
 models.Group = require('./group')(sequelize)
 models.Post = require('./post')(sequelize)
 models.Like = require('./like')(sequelize)
