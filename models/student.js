@@ -58,9 +58,6 @@ module.exports = sequelize => {
       foreignKey: 'username',
       targetKey: 'regNo',
       constraints: false,
-      scope: {
-        role: 'STUDENT',
-      },
     })
   }
 
