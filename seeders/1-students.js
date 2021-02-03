@@ -4,7 +4,7 @@ module.exports = {
   up: async queryInterface => {
     await queryInterface.bulkInsert(
       'Students',
-      [...Array(1000)].map((_, i) => ({
+      [...Array(3000)].map((_, i) => ({
         regNo: `2017-ARID-0${i}`,
         firstName: faker.name.firstName(),
         middleName: faker.random.arrayElement([faker.name.firstName(), '']),

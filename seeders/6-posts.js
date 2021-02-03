@@ -3,15 +3,13 @@ const faker = require('faker')
 module.exports = {
   up: async queryInterface => {
     const userGroup = await queryInterface.sequelize
-      .query(`SELECT UserId, GroupId FROM GroupUsers`)
+      .query(`SELECT "UserId", "GroupId" FROM "GroupUsers"`)
       .then(res => res[0])
 
     await queryInterface.bulkInsert(
       'Posts',
       [...Array(200)].map(() => {
-        const { UserId, GroupId } = userGroup[
-          Math.floor(Math.random() * userGroup.length)
-        ]
+        const { UserId, GroupId } = userGroup[Math.floor(Math.random() * userGroup.length)]
 
         return {
           text: faker.lorem.paragraph(),

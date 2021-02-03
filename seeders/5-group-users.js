@@ -1,17 +1,15 @@
 module.exports = {
   up: async queryInterface => {
     const userIds = await queryInterface.sequelize
-      .query(`SELECT id FROM users;`)
+      .query(`SELECT "id" FROM "Users";`)
       .then(res => res[0].map(({ id }) => id))
 
     const groupIds = await queryInterface.sequelize
-      .query(`SELECT id FROM groups;`)
+      .query(`SELECT "id" FROM "Groups";`)
       .then(res => res[0].map(({ id }) => id))
 
     const ids = await queryInterface.sequelize
-      .query(
-        `SELECT id from Users WHERE username in ('2017-ARID-0264','2017-ARID-0262');`
-      )
+      .query(`SELECT "id" FROM "Users" WHERE "username" IN ('2017-ARID-0264','2017-ARID-0262');`)
       .then(res => res[0].map(({ id }) => id))
 
     await queryInterface.bulkInsert(
@@ -38,7 +36,7 @@ module.exports = {
 
     await queryInterface.bulkInsert(
       'GroupUsers',
-      [...Array(100)].map(() => ({
+      [...Array(50)].map(() => ({
         createdAt: new Date(),
         updatedAt: new Date(),
         UserId: userIds[Math.floor(Math.random() * userIds.length)],

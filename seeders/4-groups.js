@@ -3,9 +3,7 @@ const faker = require('faker')
 module.exports = {
   up: async queryInterface => {
     const userIds = await queryInterface.sequelize
-      .query(
-        `SELECT id from Users WHERE username in ('2017-ARID-0264','2017-ARID-0262');`
-      )
+      .query(`SELECT "id" FROM "Users" WHERE "username" IN ('2017-ARID-0264','2017-ARID-0262');`)
       .then(res => res[0].map(({ id }) => id))
 
     await queryInterface.bulkInsert(

@@ -3,7 +3,7 @@ const faker = require('faker')
 module.exports = {
   up: async queryInterface => {
     const regNumbers = await queryInterface.sequelize
-      .query(`SELECT regNo FROM public.Students;`)
+      .query(`SELECT "regNo" FROM "Students";`)
       .then(res => res[0].map(({ regNo }) => regNo))
 
     await queryInterface.bulkInsert(
@@ -20,7 +20,7 @@ module.exports = {
     )
 
     const empNumbers = await queryInterface.sequelize
-      .query(`SELECT empNo FROM Employees;`)
+      .query(`SELECT "empNo" FROM "Employees";`)
       .then(res => res[0].map(({ empNo }) => empNo))
 
     await queryInterface.bulkInsert(

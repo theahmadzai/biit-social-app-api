@@ -4,7 +4,7 @@ module.exports = {
   up: async queryInterface => {
     await queryInterface.bulkInsert(
       'Employees',
-      [...Array(100)].map((_, i) => ({
+      [...Array(200)].map((_, i) => ({
         empNo: `BIIT${i}`,
         firstName: faker.name.prefix(),
         middleName: faker.name.firstName(),
