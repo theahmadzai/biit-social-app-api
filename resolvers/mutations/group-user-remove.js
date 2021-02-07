@@ -12,9 +12,7 @@ module.exports = async (_, { input }, { user }) => {
   const [member] = await group.getUsers({ where: { id: userId } })
 
   if (!member) {
-    throw new UserInputError(
-      `This user is not member of group: '${group.name}'`
-    )
+    throw new UserInputError(`This user is not member of group: '${group.name}'`)
   }
 
   if (userId == user.id) {
