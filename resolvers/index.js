@@ -1,7 +1,7 @@
 const { GraphQLUpload } = require('graphql-upload')
 const { Op } = require('sequelize')
 const { User, Group, Media, Like, Comment, Student, Employee } = require('../models').models
-const { searchUsersOperators } = require('../utils/db')
+const { searchUsersOperators, matchStudentClass } = require('../utils/db')
 
 const resolvers = {
   Upload: GraphQLUpload,
@@ -49,8 +49,10 @@ const resolvers = {
     group: async post => ('Group' in post ? post.Group : await post.getGroup()),
     likes: async post => ('Likes' in post ? post.Likes : await post.getLikes()),
     comments: async post => ('Comments' in post ? post.Comments : await post.getComments()),
-    likesCount: async post => ('Likes' in post ? post.Likes.length : (await post.getLikes()).length),
-    commentsCount: async post => ('Comments' in post ? post.Comments.length : (await post.getComments()).length),
+    likesCount: async post =>
+      'Likes' in post ? post.Likes.length : (await post.getLikes()).length,
+    commentsCount: async post =>
+      'Comments' in post ? post.Comments.length : (await post.getComments()).length,
   },
 
   Like: {
@@ -193,11 +195,19 @@ const resolvers = {
         where: { id: user.id },
       })
     },
-    studentDatesheet: async (_, __, { db }) => {
-      return await db.models.Datesheet.findAll({})
+    studentDatesheet: async (_, __, { db, user }) => {
+      const student = await user.getStudentProfile()
+
+      return await db.models.Datesheet.findAll({
+        where: matchStudentClass(student),
+      })
     },
-    studentTimetable: async (_, __, { db }) => {
-      return await db.models.Timetable.findAll({})
+    studentTimetable: async (_, __, { db, user }) => {
+      const student = await user.getStudentProfile()
+
+      return await db.models.Timetable.findAll({
+        where: matchStudentClass(student),
+      })
     },
   },
 
