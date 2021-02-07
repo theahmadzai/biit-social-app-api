@@ -43,6 +43,8 @@ exports.AuthorizedDirective = class extends SchemaDirectiveVisitor {
         throw new AuthenticationError(`This user doesn't exist.`)
       }
 
+      context.user = user
+
       if (user.role !== role) {
         throw new AuthenticationError(`Not authorized for role: ${role} resources.`)
       }
