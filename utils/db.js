@@ -105,3 +105,11 @@ exports.searchUsersOperators = parts => {
 
   return [{ username: { [Op.like]: `%${parts[0]}%` } }]
 }
+
+exports.matchStudentClass = ({ program, semester, section }) => {
+  return {
+    class: {
+      [Op.like]: `%${program.substring(0, 1)}%${program.substring(1)}%-%${semester}%${section}%`,
+    },
+  }
+}
