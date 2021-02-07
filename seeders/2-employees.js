@@ -2,11 +2,11 @@ const faker = require('faker')
 
 module.exports = {
   up: async queryInterface => {
-    const exists = await queryInterface.sequelize
+    const count = await queryInterface.sequelize
       .query('SELECT COUNT(*) FROM "Employees";')
-      .then(res => res[0].map(({ count }) => count))
+      .then(res => res[0][0]['count'])
 
-    if (!exists) {
+    if (parseInt(count) === 0) {
       await queryInterface.bulkInsert(
         'Employees',
         [...Array(200)].map((_, i) => ({
