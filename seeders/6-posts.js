@@ -16,7 +16,8 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           UserId,
-          GroupId,
+          postableType: 'group',
+          postableId: GroupId,
         }
       }),
       {}

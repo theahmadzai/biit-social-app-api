@@ -40,7 +40,7 @@ module.exports = gql`
   input PostInput {
     text: String
     media: [Upload!]
-    groupId: ID!
+    postableId: ID!
   }
 
   input IntelligentPostInput {
@@ -202,6 +202,7 @@ module.exports = gql`
     userPosts(id: ID!): [Post]!
     userLikes(id: ID!): [Like]!
     userComments(id: ID!): [Comment]!
+    classPosts(id: ID!): [Post]!
     groupPosts(id: ID!): [Post]!
     groupUsers(id: ID!): [User]!
     postLikes(id: ID!): [Like]!

@@ -142,9 +142,16 @@ const resolvers = {
         where: { UserId: id },
       })
     },
+    classPosts: async (_, { id }, { db }) => {
+      return await db.models.Post.findAll({
+        where: { [Op.and]: [{ postableId: id }, { postableType: 'class' }] },
+        order: [['id', 'DESC']],
+        include: [Media, User, Like, Comment],
+      })
+    },
     groupPosts: async (_, { id }, { db }) => {
       return await db.models.Post.findAll({
-        where: { GroupId: id },
+        where: { [Op.and]: [{ postableId: id }, { postableType: 'group' }] },
         order: [['id', 'DESC']],
         include: [Media, User, Like, Comment],
       })

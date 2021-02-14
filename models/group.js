@@ -37,7 +37,13 @@ module.exports = sequelize => {
       through: GroupUser,
     })
 
-    Group.hasMany(Post)
+    Group.hasMany(Post, {
+      foreignKey: 'postableId',
+      constraints: false,
+      scope: {
+        postableType: 'GROUP',
+      },
+    })
   }
 
   return Group

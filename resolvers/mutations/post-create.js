@@ -2,7 +2,7 @@ const { UserInputError } = require('apollo-server-express')
 const { storeFile } = require('../../utils/storage')
 
 module.exports = async (_, { input }, { db, user }) => {
-  const { text, media, groupId } = input
+  const { text, media, postableId } = input
 
   if ((!media || !media.length) && (!text || !text.trim().length)) {
     throw new UserInputError('No post inputs are filled.')
@@ -10,8 +10,9 @@ module.exports = async (_, { input }, { db, user }) => {
 
   const Post = await db.models.Post.create({
     text: !text || !text.trim().length ? null : text,
-    GroupId: groupId,
     UserId: user.id,
+    postableType: 'group',
+    postableId,
   })
 
   if (!media) return Post

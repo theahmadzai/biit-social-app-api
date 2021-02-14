@@ -5,20 +5,22 @@ module.exports = async (_, { id }, { user, db }) => {
   const post = await db.models.Post.findOne({
     where: { id },
     include: [
-      {
-        model: Group,
-        include: [
-          {
-            model: User,
-            where: { id: user.id },
-          },
-        ],
-      },
+      // {
+      //   model: Group,
+      //   include: [
+      //     {
+      //       model: User,
+      //       where: { id: user.id },
+      //     },
+      //   ],
+      // },
       {
         model: Like,
       },
     ],
   })
+
+  console.log(post)
 
   if (!post) {
     throw new UserInputError('Invalid post.')
