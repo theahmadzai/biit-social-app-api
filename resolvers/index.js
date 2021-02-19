@@ -1,24 +1,26 @@
 const { GraphQLUpload } = require('graphql-upload')
 const { Op } = require('sequelize')
-const { User, Group, Media, Like, Comment, Student, Employee } = require('../models').models
+const { User, Group, Media, Post, Like, Comment, Student, Employee } = require('../models').models
 const { searchUsersOperators, matchStudentClass } = require('../utils/db')
+const { getStudentClass } = require('../utils')
 
 const resolvers = {
   Upload: GraphQLUpload,
 
   User: {
-    groups: async user => await user.getGroups(),
-    groupsOwned: async user => await user.getGroupsOwned(),
-    posts: async user => await user.getPosts(),
-    likes: async user => await user.getLikes(),
-    comments: async user => await user.getComments(),
+    groups: async user => ('Groups' in user ? user.Groups : await user.getGroups()),
+    groupsOwned: async user =>
+      'GroupsOwned' in user ? user.GroupsOwned : await user.getGroupsOwned(),
+    posts: async user => ('Posts' in user ? user.posts : await user.getPosts()),
+    likes: async user => ('Likes' in user ? user.Likes : await user.getLikes()),
+    comments: async user => ('Comments' in user ? user.Comments : await user.getComments()),
     profile: async user => {
       switch (user.role) {
         case 'STUDENT':
-          return await user.getStudentProfile()
+          return 'StudentProfile' in user ? user.StudentProfile : await user.getStudentProfile()
         case 'TEACHER':
         case 'ADMIN':
-          return await user.getEmployeeProfile()
+          return 'EmployeeProfile' in user ? user.EmployeeProfile : await user.getEmployeeProfile()
         default:
           return { firstName: null, middleName: null, lastName: null }
       }
@@ -38,9 +40,13 @@ const resolvers = {
   EmployeeProfile: {},
 
   Group: {
-    owner: async group => await group.getOwner(),
-    users: async group => await group.getUsers(),
-    posts: async group => await group.getPosts(),
+    owner: async group => ('Owner' in group ? group.Owner : await group.getOwner()),
+    users: async group => ('Users' in group ? group.Users : await group.getUsers()),
+    posts: async group => ('Posts' in group ? group.Posts : await group.getPosts()),
+  },
+
+  Class: {
+    posts: async group => ('Posts' in group ? group.Posts : await group.getPosts()),
   },
 
   Post: {
@@ -119,18 +125,35 @@ const resolvers = {
         where: { UserId: id },
       })
     },
-    userGroups: async (_, { id }, { db }) => {
+    userGroups: async (_, __, { user, db }) => {
       return (
         await db.models.User.findOne({
-          where: { id },
+          where: { id: user.id },
           include: [Group],
         })
       ).Groups
     },
-    userPosts: async (_, { id }, { db }) => {
-      return await db.models.Post.findAll({
-        where: { UserId: id },
+    userPosts: async (_, __, { user, db }) => {
+      return (
+        await db.models.User.findOne({
+          where: { id: user.id },
+          include: [Post],
+        })
+      ).Posts
+    },
+    userClassPosts: async (_, __, { user, db }) => {
+      const student = await user.getStudentProfile()
+      const c = await db.models.Class.findOne({ where: { name: getStudentClass(student) } })
+
+      if (c === null) return []
+
+      return await c.getPosts({
+        include: [Media, User, Like, Comment],
+        order: [['id', 'DESC']],
       })
+    },
+    teacherClasses: async (_, __, { user }) => {
+      return await user.getClasses()
     },
     userLikes: async (_, { id }, { db }) => {
       return await db.models.Like.findAll({
@@ -143,17 +166,21 @@ const resolvers = {
       })
     },
     classPosts: async (_, { id }, { db }) => {
-      return await db.models.Post.findAll({
-        where: { [Op.and]: [{ postableId: id }, { postableType: 'class' }] },
-        order: [['id', 'DESC']],
+      return await (await db.models.Class.findOne({ where: { id } })).getPosts({
         include: [Media, User, Like, Comment],
+        order: [['id', 'DESC']],
+      })
+    },
+    wallPosts: async (_, __, { db }) => {
+      return await (await db.models.Wall.findOne({ where: { name: 'ALL' } })).getPosts({
+        include: [Media, User, Like, Comment],
+        order: [['id', 'DESC']],
       })
     },
     groupPosts: async (_, { id }, { db }) => {
-      return await db.models.Post.findAll({
-        where: { [Op.and]: [{ postableId: id }, { postableType: 'group' }] },
-        order: [['id', 'DESC']],
+      return await (await db.models.Group.findOne({ where: { id } })).getPosts({
         include: [Media, User, Like, Comment],
+        order: [['id', 'DESC']],
       })
     },
     groupUsers: async (_, { id }, { db }) => {
@@ -221,10 +248,13 @@ const resolvers = {
   Mutation: {
     login: require('./mutations/login'),
     createGroup: require('./mutations/group-create'),
+    exitGroup: require('./mutations/group-exit'),
     deleteGroup: require('./mutations/group-delete'),
     addGroupUser: require('./mutations/group-user-add'),
     removeGroupUser: require('./mutations/group-user-remove'),
     createGroupPost: require('./mutations/post-create'),
+    createClassPost: require('./mutations/create-class-post'),
+    createWallPost: require('./mutations/create-wall-post'),
     createPostComment: require('./mutations/comment-create'),
     togglePostLike: require('./mutations/post-like-toggle'),
     intelligentPost: require('./mutations/intelligent-post'),

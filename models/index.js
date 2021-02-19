@@ -11,13 +11,18 @@ models.User = require('./user')(sequelize)
 models.Group = require('./group')(sequelize)
 models.GroupUser = require('./group-user')(sequelize)
 models.Class = require('./class')(sequelize)
+models.Wall = require('./wall')(sequelize)
+models.ClassTeacher = require('./class-teacher')(sequelize)
 models.Post = require('./post')(sequelize)
+models.PostPostable = require('./post-postable')(sequelize)
 models.Like = require('./like')(sequelize)
 models.Comment = require('./comment')(sequelize)
 models.Media = require('./media')(sequelize)
 models.Course = require('./course')(sequelize)
 models.Timetable = require('./timetable')(sequelize)
 models.Datesheet = require('./datesheet')(sequelize)
+models.Parent = require('./parent')(sequelize)
+models.ParentChild = require('./parent-child')(sequelize)
 
 Object.keys(models).forEach(modelName => {
   if (models[modelName].associate) {

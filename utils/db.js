@@ -1,4 +1,5 @@
 const { Op } = require('sequelize')
+const { semesterYearToSemester } = require('./')
 
 exports.searchUsersOperators = parts => {
   if (parts.length === 3) {
@@ -109,7 +110,9 @@ exports.searchUsersOperators = parts => {
 exports.matchStudentClass = ({ program, semester, section }) => {
   return {
     class: {
-      [Op.like]: `%${program.substring(0, 1)}%${program.substring(1)}%-%${semester}%${section}%`,
+      [Op.like]: `%${program.substring(0, 1)}%${program.substring(1)}%-%${semesterYearToSemester(
+        semester
+      )}%${section}%`,
     },
   }
 }

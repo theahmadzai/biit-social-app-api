@@ -43,6 +43,18 @@ module.exports = gql`
     postableId: ID!
   }
 
+  input ClassPostInput {
+    text: String
+    media: [Upload!]
+    classId: ID
+    secret: Boolean
+  }
+
+  input WallPostInput {
+    text: String
+    media: [Upload!]
+  }
+
   input IntelligentPostInput {
     type: String!
     file: Upload!
@@ -50,6 +62,7 @@ module.exports = gql`
 
   input CommentInput {
     content: String!
+    secret: Boolean
     postId: ID!
   }
 
@@ -125,7 +138,15 @@ module.exports = gql`
     image: String!
     owner: User!
     users: [User]!
-    posts: [Post]
+    posts: [Post]!
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  type Class {
+    id: ID!
+    name: String!
+    posts: [Post]!
     createdAt: String!
     updatedAt: String!
   }
@@ -133,11 +154,13 @@ module.exports = gql`
   type Post {
     id: ID!
     text: String
-    media: [Media]
+    secret: Boolean
+    tags: String
+    media: [Media]!
     user: User!
     group: Group!
     likes: [Like]!
-    comments: [Comment]
+    comments: [Comment]!
     createdAt: String!
     updatedAt: String!
     likesCount: Int!
@@ -155,14 +178,11 @@ module.exports = gql`
   type Comment {
     id: ID!
     content: String!
+    secret: Boolean
     user: User!
     post: Post!
     createdAt: String!
     updatedAt: String!
-  }
-
-  type Notification {
-    title: String!
   }
 
   type Datesheet {
@@ -184,6 +204,10 @@ module.exports = gql`
     teacher: String
   }
 
+  type Notification {
+    title: String!
+  }
+
   type Query {
     allCourses: [Course]!
     course(code: ID!): Course
@@ -198,8 +222,11 @@ module.exports = gql`
     allMedia: [Media]
     media(id: ID!): Media
     userGroupsOwned(id: ID!): [Group]!
-    userGroups(id: ID!): [Group]!
-    userPosts(id: ID!): [Post]!
+    userGroups: [Group]! @authenticated
+    userPosts: [Post]! @authenticated
+    userClassPosts: [Post]! @authenticated
+    wallPosts: [Post]! @authenticated
+    teacherClasses: [Class]! @authenticated
     userLikes(id: ID!): [Like]!
     userComments(id: ID!): [Comment]!
     classPosts(id: ID!): [Post]!
@@ -217,10 +244,13 @@ module.exports = gql`
   type Mutation {
     login(input: AuthInput!): AuthPayload!
     createGroup(input: GroupInput!): Group! @authenticated
+    exitGroup(id: ID!): Group! @authenticated
     deleteGroup(id: ID!): Group! @authenticated
     addGroupUser(input: GroupUserInput!): User! @authenticated
     removeGroupUser(input: GroupUserInput!): User! @authenticated
     createGroupPost(input: PostInput!): Post! @authenticated
+    createClassPost(input: ClassPostInput!): Post! @authenticated
+    createWallPost(input: WallPostInput!): Post! @authenticated
     createPostComment(input: CommentInput!): Comment! @authenticated
     togglePostLike(id: ID!): [Like]! @authenticated
     intelligentPost(input: IntelligentPostInput!): String! @authorized(role: ADMIN)

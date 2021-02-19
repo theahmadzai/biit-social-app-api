@@ -2,15 +2,21 @@ const { UserInputError } = require('apollo-server-express')
 const { storeFile } = require('../../utils/storage')
 
 module.exports = async (_, { input }, { db, user }) => {
-  const { text, media, postableId } = input
+  const { text, media } = input
 
   if ((!media || !media.length) && (!text || !text.trim().length)) {
     throw new UserInputError('No post inputs are filled.')
   }
 
-  const group = await db.models.Group.findOne({ where: { id: postableId } })
+  const wall = await db.models.Wall.findOne({
+    where: { name: 'ALL' },
+  })
 
-  const post = await group.createPost({
+  if (!wall) {
+    throw new UserInputError('Invalid Wall given.')
+  }
+
+  const post = await wall.createPost({
     text: !text || !text.trim().length ? null : text,
     UserId: user.id,
   })

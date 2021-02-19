@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize')
 
 module.exports = sequelize => {
-  const Class = sequelize.define(
-    'Class',
+  const Wall = sequelize.define(
+    'Wall',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -19,31 +19,19 @@ module.exports = sequelize => {
     }
   )
 
-  Class.associate = ({ Post, PostPostable, User, ClassTeacher }) => {
-    // Class.hasMany(Post, {
-    //   foreignKey: 'postableId',
-    //   constraints: false,
-    //   scope: {
-    //     postableType: 'CLASS',
-    //   },
-    // })
-
-    Class.belongsToMany(Post, {
+  Wall.associate = ({ Post, PostPostable }) => {
+    Wall.belongsToMany(Post, {
       through: {
         model: PostPostable,
         unique: false,
         scope: {
-          postableType: 'CLASS',
+          postableType: 'WALL',
         },
       },
       foreignKey: 'postableId',
       constraints: false,
     })
-
-    Class.belongsToMany(User, {
-      through: ClassTeacher,
-    })
   }
 
-  return Class
+  return Wall
 }

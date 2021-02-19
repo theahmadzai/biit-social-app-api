@@ -1,20 +1,19 @@
 const { DataTypes } = require('sequelize')
 
 module.exports = sequelize => {
-  const Comment = sequelize.define(
-    'Comment',
+  const Parent = sequelize.define(
+    'Parent',
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      content: {
+      cnic: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
-      secret: {
-        type: DataTypes.BOOLEAN,
+      password: {
+        type: DataTypes.STRING,
       },
     },
     {
@@ -22,11 +21,11 @@ module.exports = sequelize => {
     }
   )
 
-  Comment.associate = ({ User, Post }) => {
-    Comment.belongsTo(User)
-
-    Comment.belongsTo(Post)
+  Parent.associate = ({ User, ParentChild }) => {
+    Parent.belongsToMany(User, {
+      through: ParentChild,
+    })
   }
 
-  return Comment
+  return Parent
 }

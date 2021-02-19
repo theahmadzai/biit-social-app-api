@@ -27,7 +27,7 @@ module.exports = sequelize => {
     }
   )
 
-  Group.associate = ({ User, GroupUser, Post }) => {
+  Group.associate = ({ User, GroupUser, Post, PostPostable }) => {
     Group.belongsTo(User, {
       as: 'Owner',
       foreignKey: 'UserId',
@@ -37,12 +37,24 @@ module.exports = sequelize => {
       through: GroupUser,
     })
 
-    Group.hasMany(Post, {
+    // Group.hasMany(Post, {
+    //   foreignKey: 'postableId',
+    //   constraints: false,
+    //   scope: {
+    //     postableType: 'GROUP',
+    //   },
+    // })
+
+    Group.belongsToMany(Post, {
+      through: {
+        model: PostPostable,
+        unique: false,
+        scope: {
+          postableType: 'GROUP',
+        },
+      },
       foreignKey: 'postableId',
       constraints: false,
-      scope: {
-        postableType: 'GROUP',
-      },
     })
   }
 

@@ -31,7 +31,19 @@ module.exports = sequelize => {
     }
   )
 
-  User.associate = ({ Student, Employee, Group, GroupUser, Post, Like, Comment }) => {
+  User.associate = ({
+    Student,
+    Employee,
+    Class,
+    ClassTeacher,
+    Parent,
+    ParentChild,
+    Group,
+    GroupUser,
+    Post,
+    Like,
+    Comment,
+  }) => {
     User.belongsTo(Student, {
       as: 'StudentProfile',
       foreignKey: 'username',
@@ -52,6 +64,14 @@ module.exports = sequelize => {
 
     User.belongsToMany(Group, {
       through: GroupUser,
+    })
+
+    User.belongsToMany(Class, {
+      through: ClassTeacher,
+    })
+
+    User.belongsToMany(Parent, {
+      through: ParentChild,
     })
 
     User.hasMany(Post)

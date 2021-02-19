@@ -5,7 +5,7 @@ const { notifications } = require('../events')
 const { NEW_NOTIFICATION } = notifications
 
 module.exports = async (_, { input }, { db, user }) => {
-  const { content, postId } = input
+  const { content, secret, postId } = input
 
   if (!content.trim().length) {
     throw new UserInputError('No comment text provided.')
@@ -19,6 +19,7 @@ module.exports = async (_, { input }, { db, user }) => {
 
   return await db.models.Comment.create({
     content,
+    secret,
     PostId: postId,
     UserId: user.id,
   })

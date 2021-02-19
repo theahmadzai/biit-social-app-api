@@ -12,10 +12,10 @@ module.exports = sequelize => {
       text: {
         type: DataTypes.TEXT,
       },
-      postableId: {
-        type: DataTypes.STRING,
+      secret: {
+        type: DataTypes.BOOLEAN,
       },
-      postableType: {
+      tags: {
         type: DataTypes.STRING,
       },
     },
@@ -24,18 +24,53 @@ module.exports = sequelize => {
     }
   )
 
-  Post.associate = ({ User, Group, Class, Media, Like, Comment }) => {
+  Post.associate = ({ User, Group, Class, Wall, PostPostable, Media, Like, Comment }) => {
     Post.belongsTo(User)
 
-    Post.belongsTo(Group, { foreignKey: 'postableId', constraints: false })
+    // Post.belongsTo(Group, { foreignKey: 'postableId', constraints: false })
 
-    Post.belongsTo(Class, { foreignKey: 'postableId', constraints: false })
+    // Post.belongsTo(Class, { foreignKey: 'postableId', constraints: false })
 
     Post.hasMany(Media)
 
     Post.hasMany(Like)
 
     Post.hasMany(Comment)
+
+    Post.belongsToMany(Group, {
+      through: {
+        model: PostPostable,
+        unique: false,
+      },
+      foreignKey: 'postId',
+      constraints: false,
+    })
+
+    Post.belongsToMany(Class, {
+      through: {
+        model: PostPostable,
+        unique: false,
+      },
+      foreignKey: 'postId',
+      constraints: false,
+    })
+
+    Post.belongsToMany(Wall, {
+      through: {
+        model: PostPostable,
+        unique: false,
+      },
+      foreignKey: 'postId',
+      constraints: false,
+    })
+  }
+
+  Post.getTaggables = async function (options) {
+    const classes = await this.getClasses(options)
+    const groups = await this.getGroups(options)
+    const walls = await this.getWalls(options)
+
+    return classes.concat(groups).concat(walls)
   }
 
   return Post

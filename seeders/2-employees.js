@@ -3,7 +3,7 @@ const faker = require('faker')
 module.exports = {
   up: async queryInterface => {
     const count = await queryInterface.sequelize
-      .query('SELECT COUNT(*) FROM "Employees";')
+      .query('SELECT COUNT(*) as count FROM "Employees";')
       .then(res => res[0][0]['count'])
 
     if (parseInt(count) === 0) {
